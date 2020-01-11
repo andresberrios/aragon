@@ -6,6 +6,8 @@
 </template>
 
 <script lang="ts">
+import "./assets/bootstrap.scss";
+
 import { Component, Vue } from "vue-property-decorator";
 import Calendar from "./components/Calendar.vue";
 
@@ -17,6 +19,4 @@ import Calendar from "./components/Calendar.vue";
 export default class App extends Vue {}
 </script>
 
-<style lang="scss">
-@import url("~bootstrap/dist/css/bootstrap.min.css");
-</style>
+<style lang="scss"></style>
