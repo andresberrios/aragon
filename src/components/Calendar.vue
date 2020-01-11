@@ -1,6 +1,8 @@
 <template>
   <div>
-    <MonthSelector v-model="current" />
+    <div class="text-center">
+      <MonthSelector v-model="current" class="my-4" @input="updateRange" />
+    </div>
     <div class="calendar">
       <div class="units">
         <div class="table-origin"></div>
@@ -14,19 +16,19 @@
         <div class="event-row days">
           <div
             class="day"
-            v-for="day in days"
-            :key="day"
-            :style="dayStyles(day)"
+            v-for="(day, index) in days"
+            :key="index"
+            :style="dayStyles(index)"
           >
-            {{ day }}
+            {{ day.start.day }}
           </div>
         </div>
         <div class="event-row" v-for="unit in units" :key="unit.id">
           <div
             class="day"
-            v-for="day in days"
-            :key="day"
-            :style="dayStyles(day)"
+            v-for="(day, index) in days"
+            :key="index"
+            :style="dayStyles(index)"
           ></div>
         </div>
       </div>
@@ -35,8 +37,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { DateTime, Info } from "luxon";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { DateTime, Info, Interval } from "luxon";
 import MonthSelector from "./MonthSelector.vue";
 import data from "../assets/testData";
 
@@ -46,6 +48,9 @@ import data from "../assets/testData";
 export default class Calendar extends Vue {
   units = data.units;
   current: { month: number; year: number };
+  from!: DateTime;
+  to!: DateTime;
+  days!: Interval[];
 
   constructor() {
     super();
@@ -56,17 +61,18 @@ export default class Calendar extends Vue {
     };
   }
 
-  get days() {
-    const date = DateTime.fromObject(this.current);
-    const days = [];
-    for (let i = 1; i <= date.daysInMonth; i++) {
-      days.push(i);
-    }
-    return days;
+  beforeMount() {
+    this.updateRange();
+  }
+
+  updateRange() {
+    this.from = DateTime.fromObject(this.current).startOf("month");
+    this.to = DateTime.fromObject(this.current).endOf("month");
+    this.days = Interval.fromDateTimes(this.from, this.to).splitBy({ days: 1 });
   }
 
   dayStyles(day: number) {
-    return { left: `${(day - 1) * 3}em` };
+    return { left: `${day * 3}em` };
   }
 }
 </script>
