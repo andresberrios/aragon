@@ -5,18 +5,24 @@
       <b-dropdown-item
         v-for="[num, month] in months"
         :key="num"
-        :active="num === currentMonth"
-        @click="currentMonth = num"
+        :active="num === current.month"
+        @click="
+          current.month = num;
+          emitChange();
+        "
       >
         {{ month }}
       </b-dropdown-item>
     </b-dropdown>
-    <b-dropdown class="year" :text="currentYear.toString()">
+    <b-dropdown class="year" :text="current.year.toString()">
       <b-dropdown-item
         v-for="year in yearOptions"
         :key="year"
-        :active="year === currentYear"
-        @click="currentYear = year"
+        :active="year === current.year"
+        @click="
+          current.year = year;
+          emitChange();
+        "
       >
         {{ year }}
       </b-dropdown-item>
@@ -26,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DateTime, Info } from "luxon";
 
 @Component
@@ -38,26 +44,38 @@ export default class MonthSelector extends Vue {
     },
     new Map()
   );
-  currentMonth: number;
-  currentYear: number;
+  current!: { month: number; year: number };
 
-  constructor() {
-    super();
-    const now = DateTime.local();
-    this.currentYear = now.year;
-    this.currentMonth = now.month;
+  @Prop({
+    default: () => {
+      const now = DateTime.local();
+      return {
+        month: now.month,
+        year: now.year
+      };
+    }
+  })
+  value!: { month: number; year: number };
+
+  @Watch("value", { immediate: true })
+  onValueChanged(value: { month: number; year: number }) {
+    this.current = value;
+  }
+
+  emitChange() {
+    this.$emit("input", this.current);
   }
 
   get currentMonthName() {
-    return this.months.get(this.currentMonth);
+    return this.months.get(this.current.month);
   }
 
   get yearOptions() {
     const range = 3;
     const options = [];
     for (
-      let i = this.currentYear - range;
-      i < this.currentYear + range + 1;
+      let i = this.current.year - range;
+      i < this.current.year + range + 1;
       i++
     ) {
       options.push(i);
@@ -66,22 +84,24 @@ export default class MonthSelector extends Vue {
   }
 
   prevMonth() {
-    this.currentMonth--;
+    this.current.month--;
     this.normalizeMonth();
+    this.emitChange();
   }
 
   nextMonth() {
-    this.currentMonth++;
+    this.current.month++;
     this.normalizeMonth();
+    this.emitChange();
   }
 
   normalizeMonth() {
-    if (this.currentMonth < 1) {
-      this.currentMonth = 12;
-      this.currentYear--;
-    } else if (this.currentMonth > 12) {
-      this.currentMonth = 1;
-      this.currentYear++;
+    if (this.current.month < 1) {
+      this.current.month = 12;
+      this.current.year--;
+    } else if (this.current.month > 12) {
+      this.current.month = 1;
+      this.current.year++;
     }
   }
 }
