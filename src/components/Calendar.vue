@@ -17,7 +17,7 @@
           <div
             class="day"
             v-for="(day, index) in days"
-            :key="index"
+            :key="day.start.toISO()"
             :style="dayStyles(index)"
           >
             {{ day.start.day }}
@@ -27,7 +27,7 @@
           <div
             class="day"
             v-for="(day, index) in days"
-            :key="index"
+            :key="day.start.toISO()"
             :style="dayStyles(index)"
           ></div>
         </div>
@@ -48,9 +48,9 @@ import data from "../assets/testData";
 export default class Calendar extends Vue {
   units = data.units;
   current: { month: number; year: number };
-  from!: DateTime;
-  to!: DateTime;
-  days!: Interval[];
+  from: DateTime = DateTime.local();
+  to: DateTime = DateTime.local();
+  days: Interval[] = [];
 
   constructor() {
     super();
