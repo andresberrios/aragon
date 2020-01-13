@@ -7,20 +7,20 @@
     </div>
     <div class="calendar">
       <div class="days-wrapper">
-        <div class="days" ref="days">
+        <div class="days" ref="days" :style="{ left: `${-scrollX}px` }">
           <div class="day" v-for="day in days" :key="day.start.toMillis()">
             {{ day.start.day }}
           </div>
         </div>
       </div>
       <div class="units-wrapper">
-        <div class="units">
+        <div class="units" :style="{ top: `${-scrollY}px` }">
           <div class="unit" v-for="unit in units" :key="unit.id">
             <div class="name">{{ unit.name }}</div>
           </div>
         </div>
       </div>
-      <div class="events" ref="events">
+      <div class="events" ref="events" @scroll="eventsScrolled">
         <div class="unit-events" v-for="unit in units" :key="unit.id">
           <div class="days">
             <div
@@ -50,7 +50,8 @@ export default class Calendar extends Vue {
   from: DateTime;
   to: DateTime;
   days: Interval[] = [];
-  dayWidth = 8;
+  scrollX = 0;
+  scrollY = 0;
 
   constructor() {
     super();
@@ -96,12 +97,10 @@ export default class Calendar extends Vue {
     }
   }
 
-  dayStyles(day: number) {
-    return { width: `${this.dayWidth}em`, left: `${day * this.dayWidth}em` };
-  }
-
-  get eventRowStyles() {
-    return { width: `${this.days.length * this.dayWidth}em` };
+  eventsScrolled() {
+    const events = this.$refs.events as Element;
+    this.scrollX = events.scrollLeft;
+    this.scrollY = events.scrollTop;
   }
 }
 </script>
@@ -124,6 +123,7 @@ $border: solid 1px gray;
   height: $header-height;
   border-bottom: $border;
   .days {
+    position: relative;
     text-align: center;
     background: lightgray;
   }
@@ -145,6 +145,7 @@ $border: solid 1px gray;
   width: $header-width;
   border-right: $border;
   .units {
+    position: relative;
     display: flex;
     flex-flow: column nowrap;
     background: lightgray;
