@@ -12,8 +12,8 @@
           </div>
         </div>
       </div>
-      <div class="events" :style="{ width: `${days.length * 3}em` }">
-        <div class="event-row days">
+      <div class="events">
+        <div class="event-row days" :style="eventRowStyles">
           <div
             class="day"
             v-for="(day, index) in days"
@@ -23,7 +23,12 @@
             {{ day.start.day }}
           </div>
         </div>
-        <div class="event-row" v-for="unit in units" :key="unit.id">
+        <div
+          class="event-row"
+          v-for="unit in units"
+          :key="unit.id"
+          :style="eventRowStyles"
+        >
           <div
             class="day"
             v-for="(day, index) in days"
@@ -51,6 +56,7 @@ export default class Calendar extends Vue {
   from: DateTime = DateTime.local();
   to: DateTime = DateTime.local();
   days: Interval[] = [];
+  dayWidth = 8;
 
   constructor() {
     super();
@@ -72,7 +78,11 @@ export default class Calendar extends Vue {
   }
 
   dayStyles(day: number) {
-    return { left: `${day * 3}em` };
+    return { width: `${this.dayWidth}em`, left: `${day * this.dayWidth}em` };
+  }
+
+  get eventRowStyles() {
+    return { width: `${this.days.length * this.dayWidth}em` };
   }
 }
 </script>
@@ -80,7 +90,6 @@ export default class Calendar extends Vue {
 <style scoped lang="scss">
 $unit-width: 10em;
 $row-height: 2em;
-$day-width: 3em;
 $border: solid 1px gray;
 
 .calendar {
@@ -108,13 +117,14 @@ $border: solid 1px gray;
   }
   .events {
     position: absolute;
-    left: $unit-width;
     top: 0;
-    // width is determined in inline styles
+    left: $unit-width;
+    width: calc(100% - #{$unit-width});
     height: 100%;
+    overflow-x: scroll;
     .event-row {
       position: relative;
-      width: 100%;
+      // `width` is determined in inline styles
       height: $row-height;
       text-align: center;
       border-bottom: $border;
@@ -127,8 +137,8 @@ $border: solid 1px gray;
     }
     .day {
       position: absolute;
-      left: 0; // Actually defined in inline styles
-      width: $day-width;
+      // `left` defined in inline styles
+      // `width` defined in inline styles
       height: 100%;
       border-right: $border;
       &:last-child {
