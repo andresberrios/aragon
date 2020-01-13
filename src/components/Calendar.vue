@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="text-center">
-      <MonthSelector v-model="current" class="my-4" @input="updateRange" />
+      <b-button class="mr-4" @click="extendRange('from')">&lt;-|</b-button>
+      <MonthSelector v-model="current" class="my-4" @input="selectMonth" />
+      <b-button class="ml-4" @click="extendRange('to')">|-&gt;</b-button>
+      <br />
+      {{ from }} - {{ to }}
     </div>
     <div class="calendar">
       <div class="units">
@@ -12,12 +16,12 @@
           </div>
         </div>
       </div>
-      <div class="events">
-        <div class="event-row days" :style="eventRowStyles">
+      <div class="events" ref="events">
+        <div class="event-row days" :style="eventRowStyles" ref="eventRow">
           <div
             class="day"
             v-for="(day, index) in days"
-            :key="day.start.toISO()"
+            :key="day.start.toMillis()"
             :style="dayStyles(index)"
           >
             {{ day.start.day }}
@@ -32,7 +36,7 @@
           <div
             class="day"
             v-for="(day, index) in days"
-            :key="day.start.toISO()"
+            :key="day.start.toMillis()"
             :style="dayStyles(index)"
           ></div>
         </div>
@@ -53,8 +57,8 @@ import data from "../assets/testData";
 export default class Calendar extends Vue {
   units = data.units;
   current: { month: number; year: number };
-  from: DateTime = DateTime.local();
-  to: DateTime = DateTime.local();
+  from: DateTime;
+  to: DateTime;
   days: Interval[] = [];
   dayWidth = 8;
 
@@ -65,16 +69,41 @@ export default class Calendar extends Vue {
       month: now.month,
       year: now.year
     };
+    this.from = now;
+    this.to = now;
   }
 
   beforeMount() {
+    this.selectMonth();
+  }
+
+  selectMonth() {
+    this.from = DateTime.fromObject(this.current).startOf("month");
+    this.to = DateTime.fromObject(this.current).endOf("month");
     this.updateRange();
   }
 
   updateRange() {
-    this.from = DateTime.fromObject(this.current).startOf("month");
-    this.to = DateTime.fromObject(this.current).endOf("month");
     this.days = Interval.fromDateTimes(this.from, this.to).splitBy({ days: 1 });
+  }
+
+  async extendRange(side: "from" | "to", days = 7) {
+    const events = this.$refs.events as Element;
+    const dayWidth =
+      (this.$refs.eventRow as HTMLElement).offsetWidth / this.days.length;
+    if (side === "from") {
+      this.from = this.from.minus({ days: 7 });
+      this.updateRange();
+      await Vue.nextTick();
+      events.scroll({ left: days * dayWidth + events.scrollLeft });
+      await new Promise(r => setTimeout(r, 0));
+      events.scroll({ left: 0, behavior: "smooth" });
+    } else {
+      this.to = this.to.plus({ days: 7 });
+      this.updateRange();
+      await Vue.nextTick();
+      events.scroll({ left: events.scrollWidth, behavior: "smooth" });
+    }
   }
 
   dayStyles(day: number) {
