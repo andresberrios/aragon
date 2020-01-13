@@ -4,41 +4,31 @@
       <b-button class="mr-4" @click="extendRange('from')">&lt;-|</b-button>
       <MonthSelector v-model="current" class="my-4" @input="selectMonth" />
       <b-button class="ml-4" @click="extendRange('to')">|-&gt;</b-button>
-      <br />
-      {{ from }} - {{ to }}
     </div>
     <div class="calendar">
-      <div class="units">
-        <div class="table-origin"></div>
-        <div class="unit" v-for="unit in units" :key="unit.id">
-          <div class="name">
-            {{ unit.name }}
+      <div class="days-wrapper">
+        <div class="days" ref="days">
+          <div class="day" v-for="day in days" :key="day.start.toMillis()">
+            {{ day.start.day }}
+          </div>
+        </div>
+      </div>
+      <div class="units-wrapper">
+        <div class="units">
+          <div class="unit" v-for="unit in units" :key="unit.id">
+            <div class="name">{{ unit.name }}</div>
           </div>
         </div>
       </div>
       <div class="events" ref="events">
-        <div class="event-row days" :style="eventRowStyles" ref="eventRow">
-          <div
-            class="day"
-            v-for="(day, index) in days"
-            :key="day.start.toMillis()"
-            :style="dayStyles(index)"
-          >
-            {{ day.start.day }}
+        <div class="unit-events" v-for="unit in units" :key="unit.id">
+          <div class="days">
+            <div
+              class="day"
+              v-for="day in days"
+              :key="day.start.toMillis()"
+            ></div>
           </div>
-        </div>
-        <div
-          class="event-row"
-          v-for="unit in units"
-          :key="unit.id"
-          :style="eventRowStyles"
-        >
-          <div
-            class="day"
-            v-for="(day, index) in days"
-            :key="day.start.toMillis()"
-            :style="dayStyles(index)"
-          ></div>
         </div>
       </div>
     </div>
@@ -90,7 +80,7 @@ export default class Calendar extends Vue {
   async extendRange(side: "from" | "to", days = 7) {
     const events = this.$refs.events as Element;
     const dayWidth =
-      (this.$refs.eventRow as HTMLElement).offsetWidth / this.days.length;
+      (this.$refs.days as HTMLElement).offsetWidth / this.days.length;
     if (side === "from") {
       this.from = this.from.minus({ days: 7 });
       this.updateRange();
@@ -117,62 +107,69 @@ export default class Calendar extends Vue {
 </script>
 
 <style scoped lang="scss">
-$unit-width: 10em;
-$row-height: 2em;
+$header-width: 10em;
+$header-height: 3em;
+$cell-width: 6em;
+$cell-height: 2em;
 $border: solid 1px gray;
 
 .calendar {
   position: relative;
-  .units {
-    width: $unit-width;
+  overflow: hidden;
+}
+.days-wrapper {
+  position: relative;
+  left: $header-width;
+  width: calc(100% - #{$header-width});
+  height: $header-height;
+  border-bottom: $border;
+  .days {
+    text-align: center;
+    background: lightgray;
+  }
+}
+.days {
+  height: 100%;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  .day {
+    width: $cell-width;
     border-right: $border;
-    .table-origin {
-      width: 100%;
-      height: $row-height;
-      border-bottom: $border;
+    &:last-child {
+      border-right: none;
     }
+  }
+}
+.units-wrapper {
+  position: relative;
+  width: $header-width;
+  border-right: $border;
+  .units {
+    display: flex;
+    flex-flow: column nowrap;
+    background: lightgray;
     .unit {
-      width: 100%;
-      height: $row-height;
+      height: $cell-height;
       border-bottom: $border;
       &:last-child {
         border-bottom: none;
-      }
-      .name {
-        background: lightgray;
-        height: 100%;
       }
     }
   }
-  .events {
-    position: absolute;
-    top: 0;
-    left: $unit-width;
-    width: calc(100% - #{$unit-width});
-    height: 100%;
-    overflow-x: scroll;
-    .event-row {
-      position: relative;
-      // `width` is determined in inline styles
-      height: $row-height;
-      text-align: center;
-      border-bottom: $border;
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-    .days {
-      background: lightgray;
-    }
-    .day {
-      position: absolute;
-      // `left` defined in inline styles
-      // `width` defined in inline styles
-      height: 100%;
-      border-right: $border;
-      &:last-child {
-        border-right: none;
-      }
+}
+.events {
+  position: absolute;
+  top: $header-height;
+  left: $header-width;
+  width: calc(100% - #{$header-width});
+  height: calc(100% - #{$header-height});
+  overflow: scroll;
+  .unit-events {
+    float: left;
+    height: $cell-height;
+    border-bottom: $border;
+    &:last-child {
+      border-bottom: none;
     }
   }
 }
