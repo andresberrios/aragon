@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export default {
   units: [
     {
@@ -23,6 +25,15 @@ export default {
     {
       id: 6,
       name: "603"
+    }
+  ],
+  bookings: [
+    {
+      id: 1,
+      checkIn: DateTime.fromObject({ day: 3 }),
+      checkOut: DateTime.fromObject({ day: 6 }),
+      units: [2, 4],
+      client: "Danica Vujosevic"
     }
   ]
 };

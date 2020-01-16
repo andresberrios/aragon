@@ -48,6 +48,17 @@
               :key="day.start.toMillis()"
             ></div>
           </div>
+          <div class="bookings">
+            <div
+              class="booking"
+              v-for="booking in bookings"
+              :key="booking.id"
+              :style="bookingStyles(booking)"
+              @click="showBookingDetails(booking)"
+            >
+              {{ booking.client }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -65,6 +76,8 @@ import data from "../assets/testData";
 })
 export default class Calendar extends Vue {
   units = data.units;
+  bookings = data.bookings;
+
   current: { month: number; year: number };
   from: DateTime;
   to: DateTime;
@@ -152,6 +165,26 @@ export default class Calendar extends Vue {
     }
     return { left: position + "px" };
   }
+
+  bookingStyles(booking: {
+    id: number;
+    checkIn: DateTime;
+    checkOut: DateTime;
+    units: number[];
+    client: string;
+  }) {
+    const position = this.getPosition(booking.checkIn);
+    return {
+      left: `${position + (4 * this.dayWidth) / 6}px`,
+      width: `${this.getPosition(booking.checkOut) -
+        position -
+        this.dayWidth / 3}px`
+    };
+  }
+
+  showBookingDetails(booking: any) {
+    alert(JSON.stringify(booking));
+  }
 }
 </script>
 
@@ -193,7 +226,8 @@ $border: solid 1px gray;
       position: absolute;
       height: 100%;
       overflow: hidden;
-      border: solid 3px red;
+      border: solid 2px black;
+      background: lightgray;
       .month-label {
         position: relative;
       }
@@ -239,10 +273,56 @@ $border: solid 1px gray;
   overflow: scroll;
   .unit-events {
     float: left;
+    position: relative;
     height: $cell-height;
     border-bottom: $border;
     &:last-child {
       border-bottom: none;
+    }
+    .bookings {
+      position: absolute;
+      top: 0;
+      height: $cell-height;
+      .booking {
+        position: absolute;
+        height: 100%;
+        $booking-border-width: 1px;
+        $booking-border: solid $booking-border-width black;
+        border-top: $booking-border;
+        border-bottom: $booking-border;
+        $booking-background: darken(greenyellow, 10%);
+        background: $booking-background;
+        z-index: 1;
+        cursor: pointer;
+        &::before {
+          content: "";
+          z-index: -1;
+          display: block;
+          position: absolute;
+          top: -$booking-border-width;
+          left: -$cell-width / 6;
+          height: $cell-height;
+          width: $cell-width / 2;
+          border: $booking-border;
+          border-right: none;
+          background: $booking-background;
+          transform: skewX(-45deg);
+        }
+        &::after {
+          content: "";
+          z-index: -1;
+          display: block;
+          position: absolute;
+          top: -$booking-border-width;
+          right: -$cell-width / 6;
+          height: $cell-height;
+          width: $cell-width / 2;
+          border: $booking-border;
+          border-left: none;
+          background: $booking-background;
+          transform: skewX(-45deg);
+        }
+      }
     }
   }
 }
