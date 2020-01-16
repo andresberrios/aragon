@@ -7,9 +7,28 @@
     </div>
     <div class="calendar">
       <div class="days-wrapper">
-        <div class="days" ref="days" :style="{ left: `${-scrollX}px` }">
-          <div class="day" v-for="day in days" :key="day.start.toMillis()">
-            {{ day.start.day }}
+        <div class="days-scroller" :style="{ left: `${-scrollX}px` }">
+          <div class="months">
+            <div
+              class="month"
+              v-for="month in months"
+              :key="month.start.toMillis()"
+              :style="monthStyles(month)"
+            >
+              <div class="month-label" :style="monthLabelStyles(month)">
+                {{ month.start.monthLong }}
+              </div>
+            </div>
+          </div>
+          <div class="days" ref="days">
+            <div
+              class="day"
+              v-for="day in days"
+              :key="day.start.toMillis()"
+              :style="{ background: day.contains(Date.now()) ? 'gold' : null }"
+            >
+              {{ day.start.day }}
+            </div>
           </div>
         </div>
       </div>
@@ -50,8 +69,10 @@ export default class Calendar extends Vue {
   from: DateTime;
   to: DateTime;
   days: Interval[] = [];
+  months: Interval[] = [];
   scrollX = 0;
   scrollY = 0;
+  dayWidth = 0;
 
   constructor() {
     super();
@@ -76,17 +97,30 @@ export default class Calendar extends Vue {
 
   updateRange() {
     this.days = Interval.fromDateTimes(this.from, this.to).splitBy({ days: 1 });
+    this.months = Interval.fromDateTimes(
+      this.from.startOf("month"),
+      this.to.endOf("month")
+    ).splitBy({ month: 1 });
+  }
+
+  @Watch("days.length")
+  async computeDayWidth() {
+    await Vue.nextTick();
+    this.dayWidth =
+      (this.$refs.days as HTMLElement).offsetWidth / this.days.length;
+  }
+
+  getPosition(datetime: DateTime, from: DateTime = this.from) {
+    return datetime.diff(from, "days").days * this.dayWidth;
   }
 
   async extendRange(side: "from" | "to", days = 7) {
     const events = this.$refs.events as Element;
-    const dayWidth =
-      (this.$refs.days as HTMLElement).offsetWidth / this.days.length;
     if (side === "from") {
       this.from = this.from.minus({ days: 7 });
       this.updateRange();
       await Vue.nextTick();
-      events.scroll({ left: days * dayWidth + events.scrollLeft });
+      events.scroll({ left: days * this.dayWidth + events.scrollLeft });
       await new Promise(r => setTimeout(r, 0));
       events.scroll({ left: 0, behavior: "smooth" });
     } else {
@@ -102,12 +136,30 @@ export default class Calendar extends Vue {
     this.scrollX = events.scrollLeft;
     this.scrollY = events.scrollTop;
   }
+
+  monthStyles(month: Interval) {
+    const position = this.getPosition(month.start);
+    return {
+      left: `${position}px`,
+      width: `${this.getPosition(month.end) - position}px`
+    };
+  }
+
+  monthLabelStyles(month: Interval) {
+    let position = this.getPosition(this.from, month.start) + this.scrollX;
+    if (position < 0) {
+      position = 0;
+    }
+    return { left: position + "px" };
+  }
 }
 </script>
 
 <style scoped lang="scss">
+$months-height: 2em;
+$days-height: 2em;
+$header-height: $months-height + $days-height;
 $header-width: 10em;
-$header-height: 3em;
 $cell-width: 6em;
 $cell-height: 2em;
 $border: solid 1px gray;
@@ -122,10 +174,30 @@ $border: solid 1px gray;
   width: calc(100% - #{$header-width});
   height: $header-height;
   border-bottom: $border;
+  .days-scroller {
+    position: absolute;
+    height: 100%;
+  }
   .days {
-    position: relative;
+    position: absolute;
+    top: $months-height;
+    height: $days-height;
     text-align: center;
     background: lightgray;
+  }
+  .months {
+    position: absolute;
+    top: 0;
+    height: $months-height;
+    .month {
+      position: absolute;
+      height: 100%;
+      overflow: hidden;
+      border: solid 3px red;
+      .month-label {
+        position: relative;
+      }
+    }
   }
 }
 .days {
