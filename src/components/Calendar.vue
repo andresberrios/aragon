@@ -48,16 +48,17 @@
               :key="day.start.toMillis()"
             ></div>
           </div>
-          <div class="bookings">
-            <div
-              class="booking"
-              v-for="booking in bookings"
+          <div class="stays">
+            <Stay
+              v-for="booking in bookings.filter(b =>
+                b.stays.find(s => s.unitId === unit.id)
+              )"
               :key="booking.id"
-              :style="bookingStyles(booking)"
-              @click="showBookingDetails(booking)"
+              :style="stayStyles(booking.stays.find(s => s.unitId === unit.id))"
+              @click.native="showBookingDetails(booking)"
             >
               {{ booking.client }}
-            </div>
+            </Stay>
           </div>
         </div>
       </div>
@@ -69,10 +70,12 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DateTime, Info, Interval } from "luxon";
 import MonthSelector from "./MonthSelector.vue";
+import StayComponent from "./Stay.vue";
 import data from "../assets/testData";
+import { Booking, Stay } from "../interfaces";
 
 @Component({
-  components: { MonthSelector }
+  components: { MonthSelector, Stay: StayComponent }
 })
 export default class Calendar extends Vue {
   units = data.units;
@@ -123,7 +126,7 @@ export default class Calendar extends Vue {
       (this.$refs.days as HTMLElement).offsetWidth / this.days.length;
   }
 
-  getPosition(datetime: DateTime, from: DateTime = this.from) {
+  getPosition(datetime: DateTime, from = this.from) {
     return datetime.diff(from, "days").days * this.dayWidth;
   }
 
@@ -166,23 +169,17 @@ export default class Calendar extends Vue {
     return { left: position + "px" };
   }
 
-  bookingStyles(booking: {
-    id: number;
-    checkIn: DateTime;
-    checkOut: DateTime;
-    units: number[];
-    client: string;
-  }) {
-    const position = this.getPosition(booking.checkIn);
+  stayStyles(stay: Stay) {
+    const position = this.getPosition(stay.checkIn);
     return {
       left: `${position + (4 * this.dayWidth) / 6}px`,
-      width: `${this.getPosition(booking.checkOut) -
+      width: `${this.getPosition(stay.checkOut) -
         position -
         this.dayWidth / 3}px`
     };
   }
 
-  showBookingDetails(booking: any) {
+  showBookingDetails(booking: Booking) {
     alert(JSON.stringify(booking));
   }
 }
@@ -193,7 +190,7 @@ $months-height: 2em;
 $days-height: 2em;
 $header-height: $months-height + $days-height;
 $header-width: 10em;
-$cell-width: 6em;
+$cell-width: 4em;
 $cell-height: 2em;
 $border: solid 1px gray;
 
@@ -217,6 +214,7 @@ $border: solid 1px gray;
     height: $days-height;
     text-align: center;
     background: lightgray;
+    border-bottom: $border;
   }
   .months {
     position: absolute;
@@ -279,50 +277,10 @@ $border: solid 1px gray;
     &:last-child {
       border-bottom: none;
     }
-    .bookings {
+    .stays {
       position: absolute;
       top: 0;
       height: $cell-height;
-      .booking {
-        position: absolute;
-        height: 100%;
-        $booking-border-width: 1px;
-        $booking-border: solid $booking-border-width black;
-        border-top: $booking-border;
-        border-bottom: $booking-border;
-        $booking-background: darken(greenyellow, 10%);
-        background: $booking-background;
-        z-index: 1;
-        cursor: pointer;
-        &::before {
-          content: "";
-          z-index: -1;
-          display: block;
-          position: absolute;
-          top: -$booking-border-width;
-          left: -$cell-width / 6;
-          height: $cell-height;
-          width: $cell-width / 2;
-          border: $booking-border;
-          border-right: none;
-          background: $booking-background;
-          transform: skewX(-45deg);
-        }
-        &::after {
-          content: "";
-          z-index: -1;
-          display: block;
-          position: absolute;
-          top: -$booking-border-width;
-          right: -$cell-width / 6;
-          height: $cell-height;
-          width: $cell-width / 2;
-          border: $booking-border;
-          border-left: none;
-          background: $booking-background;
-          transform: skewX(-45deg);
-        }
-      }
     }
   }
 }
