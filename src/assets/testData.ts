@@ -31,7 +31,7 @@ const data: { units: Unit[]; bookings: Booking[] } = {
   bookings: [
     {
       id: "1",
-      client: "Danica Vujosevic",
+      client: "Danica Vujošević",
       stays: [
         {
           id: "1",
@@ -41,7 +41,7 @@ const data: { units: Unit[]; bookings: Booking[] } = {
           guests: [
             {
               firstName: "Danica",
-              lastName: "Vujosevic",
+              lastName: "Vujošević",
               idType: "passport",
               id: "123456789",
               birthDate: DateTime.fromObject({ day: 9, month: 5, year: 1990 }),
@@ -49,6 +49,52 @@ const data: { units: Unit[]; bookings: Booking[] } = {
               residence: {
                 city: "Barcelona",
                 country: "Spain"
+              }
+            }
+          ]
+        },
+        {
+          id: "2",
+          unitId: "4",
+          checkIn: DateTime.fromObject({ day: 3 }),
+          checkOut: DateTime.fromObject({ day: 6 }),
+          guests: [
+            {
+              firstName: "Andrés",
+              lastName: "Berríos",
+              idType: "passport",
+              id: "123456789",
+              birthDate: DateTime.fromObject({ day: 9, month: 5, year: 1990 }),
+              nationality: "Serbia",
+              residence: {
+                city: "Barcelona",
+                country: "Spain"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "2",
+      client: "Jorge Berríos",
+      stays: [
+        {
+          id: "3",
+          unitId: "2",
+          checkIn: DateTime.fromObject({ day: 18 }),
+          checkOut: DateTime.fromObject({ day: 22 }),
+          guests: [
+            {
+              firstName: "Jorge",
+              lastName: "Berríos",
+              idType: "passport",
+              id: "123456789",
+              birthDate: DateTime.fromObject({ day: 5, month: 10, year: 1960 }),
+              nationality: "Chile",
+              residence: {
+                city: "Santiago",
+                country: "Chile"
               }
             }
           ]

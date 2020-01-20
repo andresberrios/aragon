@@ -46,18 +46,18 @@
               class="day"
               v-for="day in days"
               :key="day.start.toMillis()"
+              :style="{ background: day.contains(Date.now()) ? 'gold' : null }"
             ></div>
           </div>
           <div class="stays">
             <Stay
-              v-for="booking in bookings.filter(b =>
-                b.stays.find(s => s.unitId === unit.id)
-              )"
-              :key="booking.id"
-              :style="stayStyles(booking.stays.find(s => s.unitId === unit.id))"
+              v-for="{ stay, booking } in stays[unit.id]"
+              :key="stay.id"
+              :style="stayStyles(stay)"
               @click.native="showBookingDetails(booking)"
             >
-              {{ booking.client }}
+              {{ stay.guests[0].firstName }}
+              {{ stay.guests[0].lastName }}
             </Stay>
           </div>
         </div>
@@ -167,6 +167,17 @@ export default class Calendar extends Vue {
       position = 0;
     }
     return { left: position + "px" };
+  }
+
+  get stays() {
+    const stays: { [unitId: string]: { stay: Stay; booking: Booking }[] } = {};
+    for (const booking of this.bookings) {
+      for (const stay of booking.stays) {
+        stays[stay.unitId] = stays[stay.unitId] || [];
+        stays[stay.unitId].push({ stay, booking });
+      }
+    }
+    return stays;
   }
 
   stayStyles(stay: Stay) {
