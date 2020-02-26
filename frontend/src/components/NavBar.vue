@@ -6,8 +6,10 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item to="/">Calendar</b-nav-item>
-        <b-nav-item to="/procedures">Procedures</b-nav-item>
+        <b-nav-item to="/" active-class="active" exact>Calendar</b-nav-item>
+        <b-nav-item to="/procedures" active-class="active" exact>
+          Procedures
+        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
