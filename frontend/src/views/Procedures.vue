@@ -67,55 +67,7 @@
               </b-button-group>
             </div>
             <div class="flex-grow-1">
-              <b-form-group
-                id="step-group"
-                label="Instruction:"
-                :label-for="'instruction-' + step.id"
-              >
-                <b-input-group>
-                  <b-form-input
-                    :id="'instruction-' + step.id"
-                    v-model="step.text"
-                    required
-                    placeholder="Enter instruction"
-                  />
-                  <b-input-group-append>
-                    <b-button
-                      :variant="
-                        step.details === undefined
-                          ? 'outline-info'
-                          : 'outline-danger'
-                      "
-                      @click="toggleInstructionDetails(step)"
-                    >
-                      <b-icon icon="plus" v-if="step.details === undefined" />
-                      <b-icon icon="dash" v-if="step.details !== undefined" />
-                      Details
-                    </b-button>
-                  </b-input-group-append>
-                </b-input-group>
-                <b-form-text>
-                  Describe how to perform this step.
-                </b-form-text>
-              </b-form-group>
-              <b-form-group
-                id="step-group-details"
-                label="Details:"
-                :label-for="'details-' + step.id"
-                v-if="step.details !== undefined"
-              >
-                <b-form-textarea
-                  :id="'details-' + step.id"
-                  v-model="step.details"
-                  required
-                  placeholder="Enter details"
-                  rows="2"
-                  max-rows="6"
-                ></b-form-textarea>
-                <b-form-text>
-                  Explain details on how to perform this step.
-                </b-form-text>
-              </b-form-group>
+              <Instruction :instruction="step" />
             </div>
           </div>
         </transition-group>
@@ -140,27 +92,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { Procedure } from "../components/procedures/procedureInterfaces";
+import Instruction from "../components/procedures/Instruction.vue";
 
-interface Instruction {
-  text: string;
-  details?: string;
-}
-
-interface Conditional {
-  condition: string;
-  then: Step[];
-  else?: Step[];
-}
-
-type Step = (Instruction | Conditional) & { id: string };
-
-interface Procedure {
-  name: string;
-  description: string;
-  steps: Step[];
-}
-
-@Component
+@Component({ components: { Instruction } })
 export default class Procedures extends Vue {
   procedure: Procedure = {
     name: "",
@@ -173,14 +108,6 @@ export default class Procedures extends Vue {
       id: Math.floor(Math.random() * 1e6).toString(),
       text: ""
     });
-  }
-
-  toggleInstructionDetails(step: Instruction) {
-    if (step.details === undefined) {
-      this.$set(step, "details", "");
-    } else {
-      step.details = undefined;
-    }
   }
 
   moveStepUp(index: number) {
