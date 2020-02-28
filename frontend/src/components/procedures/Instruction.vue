@@ -3,26 +3,24 @@
     <b-form-group
       id="instruction-group"
       label="Instruction:"
-      :label-for="'instruction-' + instruction.id"
+      :label-for="'instruction-' + step.id"
     >
       <b-input-group>
         <b-form-input
-          :id="'instruction-' + instruction.id"
-          v-model="instruction.text"
+          :id="'instruction-' + step.id"
+          v-model="step.text"
           required
           placeholder="Enter instruction"
         />
         <b-input-group-append>
           <b-button
             :variant="
-              instruction.details === undefined
-                ? 'outline-info'
-                : 'outline-danger'
+              step.details === undefined ? 'outline-info' : 'outline-danger'
             "
-            @click="toggleInstructionDetails(instruction)"
+            @click="toggleInstructionDetails(step)"
           >
-            <b-icon icon="plus" v-if="instruction.details === undefined" />
-            <b-icon icon="dash" v-if="instruction.details !== undefined" />
+            <b-icon icon="plus" v-if="step.details === undefined" />
+            <b-icon icon="dash" v-if="step.details !== undefined" />
             Details
           </b-button>
         </b-input-group-append>
@@ -34,12 +32,12 @@
     <b-form-group
       id="instruction-group-details"
       label="Details:"
-      :label-for="'details-' + instruction.id"
-      v-if="instruction.details !== undefined"
+      :label-for="'details-' + step.id"
+      v-if="step.details !== undefined"
     >
       <b-form-textarea
-        :id="'details-' + instruction.id"
-        v-model="instruction.details"
+        :id="'details-' + step.id"
+        v-model="step.details"
         required
         placeholder="Enter details"
         rows="2"
@@ -59,13 +57,13 @@ import { Instruction } from "./procedureInterfaces";
 @Component
 export default class InstructionComponent extends Vue {
   @Prop()
-  instruction!: Instruction;
+  step!: Instruction;
 
-  toggleInstructionDetails(instruction: Instruction) {
-    if (instruction.details === undefined) {
-      this.$set(instruction, "details", "");
+  toggleInstructionDetails(step: Instruction) {
+    if (step.details === undefined) {
+      this.$set(step, "details", "");
     } else {
-      instruction.details = undefined;
+      step.details = undefined;
     }
   }
 }

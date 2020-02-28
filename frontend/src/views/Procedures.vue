@@ -35,53 +35,7 @@
         </b-form-group>
 
         <h2>Steps</h2>
-
-        <transition-group name="list-animations" tag="div">
-          <div
-            class="d-flex list-animations-item"
-            v-for="(step, index) in procedure.steps"
-            :key="step.id"
-          >
-            <div class="pr-4">
-              <h3 class="h5">Step {{ index + 1 }}</h3>
-              <b-button-group>
-                <b-button
-                  size="sm"
-                  variant="info"
-                  :disabled="index < 1"
-                  @click="moveStepUp(index)"
-                >
-                  <b-icon icon="arrow-up" />
-                </b-button>
-                <b-button
-                  size="sm"
-                  variant="info"
-                  :disabled="index > procedure.steps.length - 2"
-                  @click="moveStepDown(index)"
-                >
-                  <b-icon icon="arrow-down" />
-                </b-button>
-                <b-button size="sm" variant="danger" @click="removeStep(index)">
-                  <b-icon icon="trash" />
-                </b-button>
-              </b-button-group>
-            </div>
-            <div class="flex-grow-1">
-              <Instruction :instruction="step" />
-            </div>
-          </div>
-        </transition-group>
-
-        <b-button-group>
-          <b-button variant="primary" @click="addInstruction()">
-            <b-icon icon="plus" class="rounded-circle border" />
-            Instruction
-          </b-button>
-          <b-button variant="info" @click="addConditional()">
-            <b-icon icon="plus" class="rounded-circle border" />
-            Conditional
-          </b-button>
-        </b-button-group>
+        <StepEditor :steps="procedure.steps" />
 
         <hr />
         <b-button type="submit" variant="success">Submit</b-button>
@@ -93,40 +47,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Procedure } from "../components/procedures/procedureInterfaces";
-import Instruction from "../components/procedures/Instruction.vue";
+import StepEditor from "../components/procedures/StepEditor.vue";
 
-@Component({ components: { Instruction } })
+@Component({ components: { StepEditor } })
 export default class Procedures extends Vue {
   procedure: Procedure = {
     name: "",
     description: "",
     steps: []
   };
-
-  addInstruction() {
-    this.procedure.steps.push({
-      id: Math.floor(Math.random() * 1e6).toString(),
-      text: ""
-    });
-  }
-
-  moveStepUp(index: number) {
-    if (index > 0) {
-      const [removed] = this.procedure.steps.splice(index, 1);
-      this.procedure.steps.splice(index - 1, 0, removed);
-    }
-  }
-
-  moveStepDown(index: number) {
-    if (index < this.procedure.steps.length - 1) {
-      const [removed] = this.procedure.steps.splice(index, 1);
-      this.procedure.steps.splice(index + 1, 0, removed);
-    }
-  }
-
-  removeStep(index: number) {
-    this.procedure.steps.splice(index, 1);
-  }
 
   onSubmit() {
     // eslint-disable-next-line no-console
