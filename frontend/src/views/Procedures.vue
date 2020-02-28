@@ -3,33 +3,35 @@
     <h1>Create Procedure</h1>
     <div>
       <b-form @submit="onSubmit">
-        <b-form-group
-          id="name-group"
-          label="Procedure name:"
-          label-for="name"
-          description="So you can identify it."
-        >
+        <b-form-group id="name-group" label="Procedure name:" label-for="name">
           <b-form-input
             id="name"
             v-model="procedure.name"
             type="text"
             required
             placeholder="Enter name"
-          ></b-form-input>
+          />
+          <b-form-text>
+            So you can identify it.
+          </b-form-text>
         </b-form-group>
 
         <b-form-group
           id="description-group"
           label="Description:"
           label-for="description"
-          description="Specify procedure goals, requirements, etc."
         >
-          <b-form-input
+          <b-form-textarea
             id="description"
             v-model="procedure.description"
             required
             placeholder="Enter description"
-          ></b-form-input>
+            rows="3"
+            max-rows="6"
+          ></b-form-textarea>
+          <b-form-text>
+            Specify procedure goals, requirements, etc.
+          </b-form-text>
         </b-form-group>
 
         <h2>Steps</h2>
@@ -46,7 +48,7 @@
                 <b-button
                   size="sm"
                   variant="info"
-                  v-if="index > 0"
+                  :disabled="index < 1"
                   @click="moveStepUp(index)"
                 >
                   <b-icon icon="arrow-up" />
@@ -54,7 +56,7 @@
                 <b-button
                   size="sm"
                   variant="info"
-                  v-if="index < procedure.steps.length - 1"
+                  :disabled="index > procedure.steps.length - 2"
                   @click="moveStepDown(index)"
                 >
                   <b-icon icon="arrow-down" />
@@ -68,15 +70,51 @@
               <b-form-group
                 id="step-group"
                 label="Instruction:"
-                label-for="instruction"
-                description="Describe how to perform this step."
+                :label-for="'instruction-' + step.id"
               >
-                <b-form-input
-                  id="instruction"
-                  v-model="step.text"
+                <b-input-group>
+                  <b-form-input
+                    :id="'instruction-' + step.id"
+                    v-model="step.text"
+                    required
+                    placeholder="Enter instruction"
+                  />
+                  <b-input-group-append>
+                    <b-button
+                      :variant="
+                        step.details === undefined
+                          ? 'outline-info'
+                          : 'outline-danger'
+                      "
+                      @click="toggleInstructionDetails(step)"
+                    >
+                      <b-icon icon="plus" v-if="step.details === undefined" />
+                      <b-icon icon="dash" v-if="step.details !== undefined" />
+                      Details
+                    </b-button>
+                  </b-input-group-append>
+                </b-input-group>
+                <b-form-text>
+                  Describe how to perform this step.
+                </b-form-text>
+              </b-form-group>
+              <b-form-group
+                id="step-group-details"
+                label="Details:"
+                :label-for="'details-' + step.id"
+                v-if="step.details !== undefined"
+              >
+                <b-form-textarea
+                  :id="'details-' + step.id"
+                  v-model="step.details"
                   required
-                  placeholder="Enter instruction"
-                ></b-form-input>
+                  placeholder="Enter details"
+                  rows="3"
+                  max-rows="6"
+                ></b-form-textarea>
+                <b-form-text>
+                  Explain details on how to perform this step.
+                </b-form-text>
               </b-form-group>
             </div>
           </div>
@@ -132,9 +170,17 @@ export default class Procedures extends Vue {
 
   addInstruction() {
     this.procedure.steps.push({
-      id: (Math.random() * 1e6).toString(),
+      id: Math.floor(Math.random() * 1e6).toString(),
       text: ""
     });
+  }
+
+  toggleInstructionDetails(step: Instruction) {
+    if (step.details === undefined) {
+      this.$set(step, "details", "");
+    } else {
+      step.details = undefined;
+    }
   }
 
   moveStepUp(index: number) {
