@@ -151,7 +151,7 @@ export default class Procedures extends Vue {
     }
   }
 
-  removeStep(index) {
+  removeStep(index: number) {
     this.procedure.steps.splice(index, 1);
   }
 
