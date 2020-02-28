@@ -7,6 +7,8 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 import "./assets/bootstrap.scss";
 
+import "./assets/global.scss";
+
 Vue.config.productionTip = false;
 
 new Vue({

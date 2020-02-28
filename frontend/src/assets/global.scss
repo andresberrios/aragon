@@ -1,0 +1,11 @@
+.list-animations-item {
+  transition: all 0.5s;
+}
+.list-animations-enter,
+.list-animations-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-animations-leave-active {
+  position: absolute;
+}

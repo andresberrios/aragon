@@ -36,9 +36,9 @@
 
         <h2>Steps</h2>
 
-        <transition-group name="list-complete" tag="div">
+        <transition-group name="list-animations" tag="div">
           <div
-            class="d-flex list-complete-item"
+            class="d-flex list-animations-item"
             v-for="(step, index) in procedure.steps"
             :key="step.id"
           >
@@ -109,7 +109,7 @@
                   v-model="step.details"
                   required
                   placeholder="Enter details"
-                  rows="3"
+                  rows="2"
                   max-rows="6"
                 ></b-form-textarea>
                 <b-form-text>
@@ -207,17 +207,3 @@ export default class Procedures extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.list-complete-item {
-  transition: all 0.5s;
-}
-.list-complete-enter,
-.list-complete-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-.list-complete-leave-active {
-  position: absolute;
-}
-</style>
