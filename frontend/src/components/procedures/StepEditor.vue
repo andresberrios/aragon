@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="step-editor p-3">
     <transition-group name="list-animations" tag="div">
       <div
-        class="d-flex list-animations-item"
+        class="d-flex list-animations-item mb-2"
+        style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)"
         v-for="(step, index) in steps"
         :key="step.id"
       >
@@ -56,7 +57,9 @@ import { Step } from "./procedureInterfaces";
 import Instruction from "./Instruction.vue";
 import Conditional from "./Conditional.vue";
 
-@Component({ components: { Instruction, Conditional } })
+@Component({
+  components: { Instruction, Conditional }
+})
 export default class StepEditor extends Vue {
   @Prop()
   steps!: Step[];
@@ -97,3 +100,9 @@ export default class StepEditor extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.step-editor {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+</style>
