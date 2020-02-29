@@ -2,7 +2,7 @@
   <b-container class="my-5">
     <h1>Create Procedure</h1>
     <div>
-      <b-form @submit="onSubmit">
+      <b-form @submit.prevent="onSubmit">
         <b-form-group id="name-group" label="Procedure name:" label-for="name">
           <b-form-input
             id="name"
@@ -38,8 +38,9 @@
         <StepEditor :steps="procedure.steps" />
 
         <hr />
-        <b-button type="submit" variant="success">Submit</b-button>
+        <b-button type="submit" variant="success">Save</b-button>
       </b-form>
+      <pre class="my-5 p-3 bg-warning">{{ procedure }}</pre>
     </div>
   </b-container>
 </template>
