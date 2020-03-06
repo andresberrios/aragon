@@ -1,20 +1,32 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import VueRouter, { RouteConfig } from "vue-router";
 import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
+import EditProcedure from "../views/EditProcedure.vue";
 
 Vue.use(VueRouter);
 
-const routes = [
+const routes: RouteConfig[] = [
   {
     path: "/",
-    name: "Calendar",
+    name: "Home",
     component: Calendar
   },
   {
     path: "/procedures",
-    name: "Procedures",
+    name: "procedures",
     component: Procedures
+  },
+  {
+    path: "/procedures/new",
+    name: "procedures.new",
+    component: EditProcedure
+  },
+  {
+    path: "/procedures/:id/edit",
+    name: "procedures.edit",
+    component: EditProcedure,
+    props: true
   }
 ];
 

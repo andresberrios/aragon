@@ -1,7 +1,13 @@
 <template>
   <b-container class="my-5">
     <h1>Edit Procedure</h1>
-    <div>
+    <div v-if="id && $apollo.queries.procedure.loading">
+      <b-spinner small /> Loading...
+    </div>
+    <b-alert v-else-if="error" show variant="danger">
+      {{ error.message }}
+    </b-alert>
+    <div v-else>
       <b-form @submit.prevent="onSubmit">
         <b-form-group id="name-group" label="Procedure name:" label-for="name">
           <b-form-input
@@ -49,17 +55,36 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Procedure } from "../interfaces/procedure";
 import StepEditor from "../components/procedures/StepEditor.vue";
+import { GET_PROCEDURE } from "../queries/procedures";
 
-@Component({ components: { StepEditor } })
-export default class Procedures extends Vue {
-  @Prop({
-    default: {
-      name: "",
-      description: "",
-      steps: []
+@Component({
+  components: { StepEditor },
+  apollo: {
+    procedure: {
+      query: GET_PROCEDURE,
+      variables() {
+        return { id: this.id };
+      },
+      skip() {
+        return !this.id;
+      },
+      error(e) {
+        this.error = e;
+      }
     }
-  })
-  procedure!: Procedure;
+  }
+})
+export default class EditProcedure extends Vue {
+  @Prop()
+  id?: string;
+
+  procedure: Procedure = {
+    name: "",
+    description: "",
+    steps: []
+  };
+
+  error: Error | null = null;
 
   onSubmit() {
     // eslint-disable-next-line no-console
