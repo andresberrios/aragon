@@ -1,0 +1,15 @@
+# [build]
+#   base    = "frontend/"
+#   publish = "frontend/dist/"
+#   command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# [[redirects]]
+#   from = "https://aragon-admin.netlify.com/*"
+#   to = "https://admin.aparthotelaragon.cl/:splat"
+#   status = 301
+#   force = true
