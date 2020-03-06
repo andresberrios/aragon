@@ -46,17 +46,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Procedure } from "../components/procedures/procedureInterfaces";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { Procedure } from "../interfaces/procedure";
 import StepEditor from "../components/procedures/StepEditor.vue";
 
 @Component({ components: { StepEditor } })
 export default class Procedures extends Vue {
-  procedure: Procedure = {
-    name: "",
-    description: "",
-    steps: []
-  };
+  @Prop({
+    default: {
+      name: "",
+      description: "",
+      steps: []
+    }
+  })
+  procedure!: Procedure;
 
   onSubmit() {
     // eslint-disable-next-line no-console

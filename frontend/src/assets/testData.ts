@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { Booking, Unit } from "../interfaces";
+import { Booking, Unit } from "../interfaces/hotel";
 
 const data: { units: Unit[]; bookings: Booking[] } = {
   units: [

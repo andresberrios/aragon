@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Step } from "./procedureInterfaces";
+import { Step } from "../../interfaces/procedure";
 import Instruction from "./Instruction.vue";
 import Conditional from "./Conditional.vue";
 

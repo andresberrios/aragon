@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Procedure } from "../components/procedures/procedureInterfaces";
+import { Procedure } from "../interfaces/procedure";
 import gql from "graphql-tag";
 
 @Component({

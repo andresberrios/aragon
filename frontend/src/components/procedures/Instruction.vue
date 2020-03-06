@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Instruction } from "./procedureInterfaces";
+import { Instruction } from "../../interfaces/procedure";
 
 @Component
 export default class InstructionComponent extends Vue {

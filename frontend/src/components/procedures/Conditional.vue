@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Conditional } from "./procedureInterfaces";
+import { Conditional } from "../../interfaces/procedure";
 
 @Component({
   components: { StepEditor: () => import("./StepEditor.vue") }
