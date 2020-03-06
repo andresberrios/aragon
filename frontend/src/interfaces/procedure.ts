@@ -22,4 +22,6 @@ export interface Procedure {
   name: string;
   description: string;
   steps: Step[];
+  createdAt?: string;
+  updatedAt?: string;
 }

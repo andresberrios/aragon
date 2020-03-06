@@ -46,7 +46,6 @@
         <hr />
         <b-button type="submit" variant="success">Save</b-button>
       </b-form>
-      <pre class="my-5 p-3 bg-warning">{{ procedure }}</pre>
     </div>
   </b-container>
 </template>
@@ -55,7 +54,12 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Procedure } from "../interfaces/procedure";
 import StepEditor from "../components/procedures/StepEditor.vue";
-import { GET_PROCEDURE } from "../queries/procedures";
+import {
+  GET_PROCEDURE,
+  GET_PROCEDURES,
+  CREATE_PROCEDURE,
+  UPDATE_PROCEDURE
+} from "../queries/procedures";
 
 @Component({
   components: { StepEditor },
@@ -86,9 +90,34 @@ export default class EditProcedure extends Vue {
 
   error: Error | null = null;
 
-  onSubmit() {
-    // eslint-disable-next-line no-console
-    console.log("Oh yeah");
+  async onSubmit() {
+    const isNew = !this.id;
+    await this.$apollo.mutate({
+      mutation: isNew ? CREATE_PROCEDURE : UPDATE_PROCEDURE,
+      variables: {
+        id: this.id,
+        values: {
+          name: this.procedure.name,
+          description: this.procedure.description,
+          steps: this.procedure.steps
+        }
+      },
+      update: (store, { data: { operation } }) => {
+        const data = store.readQuery<{ procedures: Procedure[] }>({
+          query: GET_PROCEDURES
+        });
+        if (data) {
+          if (isNew) {
+            data.procedures.push(...operation.returning);
+          }
+          data.procedures = data.procedures.sort(
+            (a, b) => Date.parse(b.updatedAt!) - Date.parse(a.updatedAt!)
+          );
+          store.writeQuery({ query: GET_PROCEDURES, data });
+        }
+      }
+    });
+    this.$router.push({ name: "procedures" });
   }
 }
 </script>

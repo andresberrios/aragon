@@ -14,8 +14,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 const link = new HttpLink({
   uri: process.env.VUE_APP_GRAPHQL_URI,
-  fetch,
-  headers: { "X-Hasura-Role": "anonymous" }
+  fetch
 });
 
 const client = new ApolloClient({
