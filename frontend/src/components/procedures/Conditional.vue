@@ -11,13 +11,13 @@
         />
       </b-input-group>
       <b-form-text>
-        Condition that should be met in order to proceeed with the
+        Condition that should be met in order to proceed with the
         <strong>THEN</strong> block.
       </b-form-text>
     </b-form-group>
     <div>
       <h3 class="h5">THEN</h3>
-      <StepEditor :steps="step.then" />
+      <StepEditor :steps="step.then" :seq-prefix="`${seqId}.`" />
     </div>
   </div>
 </template>
@@ -32,5 +32,8 @@ import { Conditional } from "../../interfaces/procedure";
 export default class ConditionalComponent extends Vue {
   @Prop()
   step!: Conditional;
+
+  @Prop()
+  seqId?: string;
 }
 </script>

@@ -8,7 +8,7 @@
         :key="step.id"
       >
         <div class="pr-4">
-          <h3 class="h5">Step {{ index + 1 }}</h3>
+          <h3 class="h5">Step {{ seqPrefix }}{{ index + 1 }}</h3>
           <b-button-group>
             <b-button
               size="sm"
@@ -33,7 +33,11 @@
         </div>
         <div class="flex-grow-1">
           <Instruction :step="step" v-if="step.type === 'instruction'" />
-          <Conditional :step="step" v-if="step.type === 'conditional'" />
+          <Conditional
+            :step="step"
+            :seq-id="`${seqPrefix || ''}${index + 1}`"
+            v-if="step.type === 'conditional'"
+          />
         </div>
       </div>
     </transition-group>
@@ -63,6 +67,9 @@ import Conditional from "./Conditional.vue";
 export default class StepEditor extends Vue {
   @Prop()
   steps!: Step[];
+
+  @Prop()
+  seqPrefix?: string;
 
   addInstruction() {
     this.steps.push({
