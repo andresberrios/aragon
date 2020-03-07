@@ -1,6 +1,10 @@
 <template>
   <div>
-    <b-form-group id="condition-group" label="Condition:" label-for="condition">
+    <b-form-group
+      id="condition-group"
+      label="Condition:"
+      :label-for="'condition-' + step.id"
+    >
       <b-input-group prepend="IF">
         <b-form-input
           :id="'condition-' + step.id"
@@ -41,10 +45,9 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Conditional } from "../../interfaces/procedure";
+import StepEditor from "./StepEditor.vue";
 
-@Component({
-  components: { StepEditor: () => import("./StepEditor.vue") }
-})
+@Component({ components: { StepEditor } })
 export default class ConditionalComponent extends Vue {
   @Prop()
   step!: Conditional;

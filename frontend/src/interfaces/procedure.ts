@@ -9,6 +9,12 @@ export interface Instruction extends BaseStep {
   details?: string;
 }
 
+export interface StepGroup extends BaseStep {
+  type: "group";
+  title: string;
+  steps: Step[];
+}
+
 export interface Conditional extends BaseStep {
   type: "conditional";
   condition: string;
@@ -16,7 +22,7 @@ export interface Conditional extends BaseStep {
   else?: Step[];
 }
 
-export type Step = Instruction | Conditional;
+export type Step = Instruction | Conditional | StepGroup;
 
 export interface Procedure {
   name: string;

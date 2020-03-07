@@ -33,6 +33,11 @@
         </div>
         <div class="flex-grow-1">
           <Instruction :step="step" v-if="step.type === 'instruction'" />
+          <StepGroup
+            :step="step"
+            :seq-id="`${seqPrefix || ''}${index + 1}`"
+            v-if="step.type === 'group'"
+          />
           <Conditional
             :step="step"
             :seq-id="`${seqPrefix || ''}${index + 1}`"
@@ -47,6 +52,10 @@
         <b-icon icon="plus" class="rounded-circle border" />
         Instruction
       </b-button>
+      <b-button variant="secondary" @click="addGroup()">
+        <b-icon icon="plus" class="rounded-circle border" />
+        Group
+      </b-button>
       <b-button variant="info" @click="addConditional()">
         <b-icon icon="plus" class="rounded-circle border" />
         Conditional
@@ -59,10 +68,13 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Step } from "../../interfaces/procedure";
 import Instruction from "./Instruction.vue";
-import Conditional from "./Conditional.vue";
 
 @Component({
-  components: { Instruction, Conditional }
+  components: {
+    Instruction,
+    StepGroup: () => import("./StepGroup.vue"),
+    Conditional: () => import("./Conditional.vue")
+  }
 })
 export default class StepEditor extends Vue {
   @Prop()
@@ -71,9 +83,13 @@ export default class StepEditor extends Vue {
   @Prop()
   seqPrefix?: string;
 
+  generateStepId() {
+    return Math.floor(Math.random() * 1e9).toString();
+  }
+
   addInstruction() {
     this.steps.push({
-      id: Math.floor(Math.random() * 1e6).toString(),
+      id: this.generateStepId(),
       type: "instruction",
       text: ""
     });
@@ -81,10 +97,19 @@ export default class StepEditor extends Vue {
 
   addConditional() {
     this.steps.push({
-      id: Math.floor(Math.random() * 1e6).toString(),
+      id: this.generateStepId(),
       type: "conditional",
       condition: "",
       then: []
+    });
+  }
+
+  addGroup() {
+    this.steps.push({
+      id: this.generateStepId(),
+      type: "group",
+      title: "",
+      steps: []
     });
   }
 
