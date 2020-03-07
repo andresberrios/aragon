@@ -27,7 +27,7 @@
           </div>
           <div class="flex-grow-1">
             <h2 class="h4">{{ procedure.name }}</h2>
-            <p>{{ procedure.description }}</p>
+            <pre>{{ procedure.description }}</pre>
           </div>
         </li>
       </ul>
