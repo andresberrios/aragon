@@ -71,8 +71,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { DateTime, Info, Interval } from "luxon";
 import MonthSelector from "./MonthSelector.vue";
 import StayComponent from "./Stay.vue";
-import data from "../assets/testData";
-import { Booking, Stay } from "../interfaces/hotel";
+import data from "../../assets/testData";
+import { Booking, Stay } from "../../interfaces/hotel";
 
 @Component({
   components: { MonthSelector, Stay: StayComponent }
