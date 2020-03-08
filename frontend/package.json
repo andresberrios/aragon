@@ -12,7 +12,7 @@
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
     "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.2.0",
+    "bootstrap-vue": "^2.6.1",
     "core-js": "^3.4.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
