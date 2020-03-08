@@ -12,6 +12,9 @@
         <b-nav-item :to="{ name: 'procedures' }" active-class="active">
           Procedures
         </b-nav-item>
+        <b-nav-item :to="{ name: 'sales.new' }" active-class="active">
+          Sales
+        </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
