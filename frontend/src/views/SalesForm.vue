@@ -8,7 +8,6 @@
             label="Tipo de documento: "
             v-model="sale.selected"
             :options="options"
-            size="sm"
           ></b-form-select>
         </b-form-group>
         <b-form-group label="Número de Documento">
