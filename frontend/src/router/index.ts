@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
+import Login from "../views/Login.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,12 @@ const routes: RouteConfig[] = [
     meta: { title: "Edit Procedure" },
     component: EditProcedure,
     props: true
+  },
+  {
+    path: "/login",
+    name: "login",
+    meta: { title: "Login", hideNavBar: true },
+    component: Login
   }
 ];
 
