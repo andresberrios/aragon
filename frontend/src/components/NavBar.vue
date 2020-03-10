@@ -13,10 +13,51 @@
           Procedures
         </b-nav-item>
       </b-navbar-nav>
+      <b-navbar-nav class="ml-auto">
+        <b-navbar-nav v-if="loading">
+          <b-spinner />
+        </b-navbar-nav>
+        <b-navbar-nav v-if="error">
+          <span class="text-danger">Error al cargar usuario</span>
+        </b-navbar-nav>
+        <b-nav-item-dropdown right v-else>
+          <template v-slot:button-content>
+            <b-icon icon="user" />
+            {{ user.display_name }}
+          </template>
+          <b-dropdown-item @click="logout">Cerrar sesión</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 
-<script>
-export default {};
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+import auth from "../services/auth";
+import { User } from "../interfaces/app";
+
+@Component
+export default class NavBar extends Vue {
+  loading = true;
+  user: User | null = null;
+  error: Error | null = null;
+
+  async mounted() {
+    try {
+      if (!auth.getJWTToken()) {
+        await auth.refreshToken();
+      }
+      this.user = await auth.getUser();
+    } catch (e) {
+      this.error = e;
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  logout() {
+    auth.logout();
+  }
+}
 </script>
