@@ -4,23 +4,19 @@
       <h1>Sales</h1>
       <b-form class="mt-4">
         <b-form-group label="Tipo de Documento: ">
-          <b-form-select
-            v-model="sale.selectedType"
-            :options="optionsType"
-            required
-          >
+          <b-form-select v-model="sale.type" :options="options.type" required>
           </b-form-select>
         </b-form-group>
         <b-form-group label="Número de Documento">
           <b-form-input
-            v-model="sale.documentNum"
+            v-model="sale.number"
             placeholder="Ingrese el número de documento"
             required
           ></b-form-input>
         </b-form-group>
         <b-form-group label="Seleccione fecha">
           <b-form-datepicker
-            v-model="sale.selectedDate"
+            v-model="sale.date"
             class="mb-2"
             required
           ></b-form-datepicker>
@@ -41,7 +37,7 @@
         <b-form-group label="Venta Neta">
           <b-input-group size="md" prepend="$">
             <b-form-input
-              v-model="sale.netSale"
+              v-model="sale.net"
               type="number"
               placeholder="Ingrese el valor de venta neta"
               required
@@ -61,7 +57,7 @@
         <b-form-group label="Total Factura">
           <b-input-group size="md" prepend="$">
             <b-form-input
-              :value="sale.netSale * (sale.tax / 100 + 1)"
+              :value="sale.net * (sale.tax / 100 + 1)"
               type="number"
               placeholder="Total factura"
               disabled
@@ -70,8 +66,8 @@
         </b-form-group>
         <b-form-group label="Origen: ">
           <b-form-select
-            v-model="sale.selectedSource"
-            :options="optionsSource"
+            v-model="sale.source"
+            :options="options.source"
             required
           >
           </b-form-select>
@@ -85,49 +81,57 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
+import { Sale } from "../interfaces/sales";
 
-@Component()
+interface SelectOption {
+  value: string | null;
+  text: string;
+  disabled?: boolean;
+}
+
+@Component
 export default class SalesForm extends Vue {
-  sale: any = {
-    documentNum: "",
-    voucherNum: "",
-    selectedType: null,
-    selectedDate: "",
+  sale: Sale = {
+    number: "",
+    type: null as any,
+    date: "",
     clientName: "",
     clientRut: "",
-    netSale: "",
-    tax: "",
-    totalValue: "",
-    selectedSource: null
+    net: null as any,
+    tax: null as any,
+    source: null as any
   };
-  optionsType: any = [
-    {
-      value: null,
-      text: "-- Seleccione el tipo de documento --",
-      disabled: true
-    },
-    { value: "voucher", text: "Voucher" },
-    { value: "boleta", text: "Boleta" },
-    { value: "factura-elect", text: "Factura Electronica" },
-    {
-      value: "factura-export-elect",
-      text: "Factura Exportacion Electronica"
-    },
-    { value: "factura-export", text: "Factura Exportacion" },
-    { value: "nota-credito-elect", text: "Nota de Credito Electronica" },
-    { value: "nota-credito-export", text: "Nota de Credito Exportacion" }
-  ];
-  optionsSource: any = [
-    { value: null, text: "-- Seleccione el origen de reserva --" },
-    { value: "booking", text: "Booking" },
-    { value: "cocha", text: "Cocha" },
-    { value: "expedia", text: "Expedia" },
-    { value: "despegar", text: "Despegar" },
-    { value: "recomendacion", text: "Recomendación" },
-    { value: "walk-in", text: "Walk-in" },
-    { value: "sitio-web", text: "Sitio web" },
-    { value: "anuncio", text: "Anuncio" }
-  ];
+  options: { type: SelectOption[]; source: SelectOption[] } = {
+    type: [
+      {
+        value: null,
+        text: "-- Seleccione el tipo de documento --",
+        disabled: true
+      },
+      { value: "voucher", text: "Voucher" },
+      { value: "boleta", text: "Boleta" },
+      { value: "factura-elect", text: "Factura Electronica" },
+      {
+        value: "factura-export-elect",
+        text: "Factura Exportacion Electronica"
+      },
+      { value: "factura-export", text: "Factura Exportacion" },
+      { value: "nota-credito-elect", text: "Nota de Credito Electronica" },
+      { value: "nota-credito-export", text: "Nota de Credito Exportacion" }
+    ],
+    source: [
+      { value: null, text: "-- Seleccione el origen de reserva --" },
+      { value: "booking-com", text: "Booking.com" },
+      { value: "cocha", text: "Cocha" },
+      { value: "agency", text: "Agencia" },
+      { value: "expedia", text: "Expedia" },
+      { value: "despegar-com", text: "Despegar.com" },
+      { value: "referral", text: "Referido" },
+      { value: "walk-in", text: "Venta directa" },
+      { value: "website", text: "Sitio web" },
+      { value: "ad", text: "Anuncio" }
+    ]
+  };
 }
 </script>
 
