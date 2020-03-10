@@ -17,6 +17,9 @@ HelplessAuth.prototype.getUser = async function() {
   const res = await fetch(process.env.VUE_APP_AUTH_URL + "/auth/user", {
     headers: { Authorization: `Bearer ${this.getJWTToken()}` }
   });
+  if (!res.ok) {
+    throw new Error("Failed to get user data");
+  }
   return (await res.json()).user;
 };
 
