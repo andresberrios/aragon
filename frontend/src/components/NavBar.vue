@@ -17,7 +17,7 @@
         <b-navbar-nav v-if="loading">
           <b-spinner />
         </b-navbar-nav>
-        <b-navbar-nav v-if="error">
+        <b-navbar-nav v-else-if="error">
           <span class="text-danger">Error al cargar usuario</span>
         </b-navbar-nav>
         <b-nav-item-dropdown right v-else>
