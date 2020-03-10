@@ -8,8 +8,8 @@ services:
       POSTGRES_PASSWORD: secret
   hasura:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.hasura
+      context: ./hasura
+      dockerfile: Dockerfile
     ports:
       - 5000:5000
     environment:
@@ -23,8 +23,8 @@ services:
       - db
   hbp:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.hbp
+      context: ./hbp
+      dockerfile: Dockerfile
     ports:
       - 5001:5001
     environment:
@@ -34,4 +34,3 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "development_key_123456789_123456789"}'
     depends_on:
       - hasura
-    command: node src/index.js

@@ -12,3 +12,5 @@ ENV STORAGE_ACTIVE=false
 # ENV S3_SECRET_ACCESS_KEY=<secret>
 # ENV S3_ENDPOINT=<endpoint>
 # ENV S3_BUCKET=<bucket>
+
+CMD ["node", "src/index.js"]
