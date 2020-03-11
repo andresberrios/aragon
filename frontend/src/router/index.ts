@@ -4,6 +4,7 @@ import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
 import Login from "../views/Login.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -43,6 +44,12 @@ const routes: RouteConfig[] = [
     name: "login",
     meta: { title: "Login", hideNavBar: true },
     component: Login
+  },
+  {
+    path: "*",
+    name: "notFound",
+    meta: { title: "Not Found", hideNavBar: true },
+    component: NotFound
   }
 ];
 
