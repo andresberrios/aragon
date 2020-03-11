@@ -1,5 +1,7 @@
 # Aragón Admin
 
+![Aragón Logo](https://www.aparthotelaragon.cl/images/logo-aragon.png)
+
 An admin platform for managing various areas of the Aragón Apart Hotel. Areas include:
 
 - Business process management through Procedures and Checklists.
