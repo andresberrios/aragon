@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
+import auth from "../services/auth";
+
 import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
@@ -57,6 +59,16 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach(async (to, from, next) => {
+  const isAuthenticated =
+    auth.getJWTToken() || ((await auth.refreshToken()) && auth.getJWTToken());
+  if (to.name !== "login" && !isAuthenticated) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 router.afterEach(to => {
