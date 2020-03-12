@@ -2,12 +2,12 @@
   <div class="step-editor p-3">
     <transition-group name="list-animations" tag="div">
       <div
-        class="d-flex list-animations-item mb-2"
+        class="row list-animations-item mb-2"
         style="border-bottom: solid 1px rgba(0, 0, 0, 0.2)"
         v-for="(step, index) in steps"
         :key="step.id"
       >
-        <div class="pr-4">
+        <div class="col-md-auto pr-4">
           <h3 class="h5">Step {{ seqPrefix }}{{ index + 1 }}</h3>
           <b-button-group>
             <b-button
@@ -31,7 +31,7 @@
             </b-button>
           </b-button-group>
         </div>
-        <div class="flex-grow-1">
+        <div class="col-md">
           <Instruction :step="step" v-if="step.type === 'instruction'" />
           <StepGroup
             :step="step"
