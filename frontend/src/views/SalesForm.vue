@@ -17,6 +17,9 @@
         <b-form-group label="Seleccione fecha">
           <b-form-datepicker
             v-model="sale.date"
+            start-weekday="1"
+            locale="es"
+            v-bind="datePickerLabels"
             class="mb-2"
             required
           ></b-form-datepicker>
@@ -82,6 +85,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Sale } from "../interfaces/sales";
+import { datePickerLabels } from "../services/i18n";
 
 interface SelectOption {
   value: string | null;
@@ -132,6 +136,7 @@ export default class SalesForm extends Vue {
       { value: "ad", text: "Anuncio" }
     ]
   };
+  datePickerLabels = datePickerLabels;
 }
 </script>
 
