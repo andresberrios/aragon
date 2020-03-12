@@ -77,9 +77,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const isAuthenticated =
-    auth.getJWTToken() || ((await auth.refreshToken()) && auth.getJWTToken());
-  if (to.name !== "login" && !isAuthenticated) {
+  if (to.name !== "login" && !(await auth.isAuthenticated())) {
     next({ name: "login" });
   } else {
     next();

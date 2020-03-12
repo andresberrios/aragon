@@ -26,8 +26,7 @@ const httpLink = new HttpLink({
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  let token =
-    auth.getJWTToken() || ((await auth.refreshToken()) && auth.getJWTToken());
+  const token = await auth.retrieveJWTToken();
   return {
     headers: {
       ...headers,

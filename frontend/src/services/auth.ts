@@ -23,8 +23,20 @@ HelplessAuth.prototype.getUser = async function() {
   return (await res.json()).user;
 };
 
+HelplessAuth.prototype.retrieveJWTToken = async function() {
+  return (
+    this.getJWTToken() || ((await this.refreshToken()) && this.getJWTToken())
+  );
+};
+
+HelplessAuth.prototype.isAuthenticated = async function() {
+  return Boolean(await this.retrieveJWTToken());
+};
+
 interface ImprovedAuth extends Auth {
   getUser(): Promise<any>;
+  retrieveJWTToken(): Promise<boolean>;
+  isAuthenticated(): Promise<boolean>;
 }
 
 client.initializeApp({
