@@ -5,6 +5,7 @@ import auth from "../services/auth";
 import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
+import ShowProcedure from "../views/ShowProcedure.vue";
 import SalesForm from "../views/SalesForm.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
@@ -34,6 +35,13 @@ const routes: RouteConfig[] = [
     name: "procedures.new",
     meta: { title: "New Procedure" },
     component: EditProcedure
+  },
+  {
+    path: "/procedures/:id",
+    name: "procedures.show",
+    meta: { title: "Procedure" },
+    component: ShowProcedure,
+    props: true
   },
   {
     path: "/procedures/:id/edit",
