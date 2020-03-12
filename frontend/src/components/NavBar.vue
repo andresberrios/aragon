@@ -15,6 +15,9 @@
         <b-nav-item :to="{ name: 'sales.new' }" active-class="active">
           Sales
         </b-nav-item>
+        <b-nav-item :to="{ name: 'contact.new' }" active-class="active">
+          Contacts
+        </b-nav-item>
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <b-navbar-nav v-if="loading">

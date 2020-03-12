@@ -8,6 +8,7 @@ import EditProcedure from "../views/EditProcedure.vue";
 import SalesForm from "../views/SalesForm.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
+import ContactForm from "../views/ContactForm.vue";
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,12 @@ const routes: RouteConfig[] = [
     name: "notFound",
     meta: { title: "Not Found", hideNavBar: true },
     component: NotFound
+  },
+  {
+    path: "/contact/new",
+    name: "contact.new",
+    meta: { title: "New Contact" },
+    component: ContactForm
   }
 ];
 
