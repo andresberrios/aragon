@@ -26,8 +26,14 @@
             </b-button>
           </div>
           <div class="flex-grow-1">
-            <h2 class="h4">{{ procedure.name }}</h2>
-            <pre>{{ procedure.description }}</pre>
+            <h2 class="h4">
+              <router-link
+                :to="{ name: 'procedures.show', params: { id: procedure.id } }"
+              >
+                {{ procedure.name }}
+              </router-link>
+            </h2>
+            <vue-simple-markdown :source="procedure.description" />
           </div>
         </li>
       </ul>

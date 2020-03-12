@@ -1,3 +1,5 @@
+/// <reference types="../@types/types" />
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -7,6 +9,10 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 import "./assets/bootstrap.scss";
 import "./assets/global.scss";
+
+import VueSimpleMarkdown from "vue-simple-markdown";
+Vue.use(VueSimpleMarkdown);
+import "vue-simple-markdown/dist/vue-simple-markdown.css";
 
 import ApolloClient from "apollo-client";
 import { HttpLink } from "apollo-link-http";
