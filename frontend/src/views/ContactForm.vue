@@ -63,6 +63,18 @@
             required
           ></b-form-input>
         </b-form-group>
+        <b-form-group label="Seleccione fecha de nacimiento">
+          <b-form-input type="date" />
+          <!-- <b-form-datepicker
+            v-model="contact.dateOfBirth"
+            start-weekday="1"
+            type="date"
+            locale="es"
+            v-bind="datePickerLabels"
+            class="mb-2"
+            required
+          ></b-form-datepicker> -->
+        </b-form-group>
         <b-form-group label="Número de teléfono">
           <b-input-group>
             <b-input-group-prepend is-text>
@@ -130,6 +142,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { datePickerLabels } from "../services/i18n";
 
 @Component
 export default class ContactForm extends Vue {
@@ -138,6 +151,7 @@ export default class ContactForm extends Vue {
     name: "",
     idType: null,
     idNum: "",
+    dateOfBirth: "",
     phone: null as any,
     email: "",
     address: {
@@ -147,6 +161,7 @@ export default class ContactForm extends Vue {
       country: ""
     }
   };
+  datePickerLabels = datePickerLabels;
 }
 </script>
 
