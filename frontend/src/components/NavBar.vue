@@ -25,7 +25,7 @@
         </b-navbar-nav>
         <b-nav-item-dropdown right v-else>
           <template v-slot:button-content>
-            <b-icon icon="user" />
+            <b-icon icon="person-fill" shift-v="-1" scale="1.2" />
             {{ user.display_name }}
           </template>
           <b-dropdown-item @click="logout">Cerrar sesión</b-dropdown-item>
