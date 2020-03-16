@@ -21,7 +21,7 @@ jobs:
         run: cd hasura && npm install
 
       - name: Apply migrations
-        run: cd hasura && npm run migrate
+        run: cd hasura && npm run migrate -- --skip-update-check
         env:
           HASURA_GRAPHQL_ENDPOINT: ${{ secrets.HASURA_GRAPHQL_ENDPOINT }}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
