@@ -1,0 +1,27 @@
+name: Apply Hasura Migrations
+
+on:
+  push:
+    paths: [ 'hasura/**' ]
+    branches: [ master ]
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Change current directory
+      run: cd hasura
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Apply migrations
+      run: npm run migrate
