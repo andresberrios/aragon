@@ -134,9 +134,6 @@
         </b-button>
       </b-form>
     </b-container>
-    <b-card class="mt-3" header="Contact Form Result">
-      <pre class="m-0">{{ contact }}</pre>
-    </b-card>
   </div>
 </template>
 
