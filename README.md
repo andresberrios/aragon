@@ -32,6 +32,10 @@ To start all the required services just run:
 docker-compose up
 ```
 
+When starting them for the first time (or after destroying the containers and recreating them again),
+it might fail to start `hasura` since it will try to connect to the DB while Postgres is still initializing itself.
+You just need to stop them and start them again and it should work well from then on.
+
 To stop them, just interrupt the process with `Ctrl + C`.
 To destroy the containers and reset your dev environment, run `docker-compose down`.
 To rebuild the Docker images from the Dockerfiles (e.g. in case they have changed), run `docker-compose up --build`.
