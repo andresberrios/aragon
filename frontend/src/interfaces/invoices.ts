@@ -1,5 +1,6 @@
-export interface Sale {
+export interface Invoice {
   id?: string;
+  isIncome: boolean;
   number: string;
   type: string;
   date: string;

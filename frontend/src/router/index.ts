@@ -6,7 +6,7 @@ import Calendar from "../views/Calendar.vue";
 import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
 import ShowProcedure from "../views/ShowProcedure.vue";
-import SalesForm from "../views/SalesForm.vue";
+import InvoicesForm from "../views/InvoicesForm.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
 import ContactForm from "../views/ContactForm.vue";
@@ -52,10 +52,10 @@ const routes: RouteConfig[] = [
     props: true
   },
   {
-    path: "/sales/new",
-    name: "sales.new",
-    meta: { title: "New Sales Document" },
-    component: SalesForm
+    path: "/invoices/new",
+    name: "invoices.new",
+    meta: { title: "New Invoice" },
+    component: InvoicesForm
   },
   {
     path: "/login",

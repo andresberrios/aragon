@@ -12,8 +12,8 @@
         <b-nav-item :to="{ name: 'procedures' }" active-class="active">
           Procedures
         </b-nav-item>
-        <b-nav-item :to="{ name: 'sales.new' }" active-class="active">
-          Sales
+        <b-nav-item :to="{ name: 'invoices.new' }" active-class="active">
+          Invoices
         </b-nav-item>
         <b-nav-item :to="{ name: 'contact.new' }" active-class="active">
           Contacts
