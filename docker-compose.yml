@@ -18,10 +18,24 @@ services:
       PORT: 5000
       HASURA_GRAPHQL_ADMIN_SECRET: secret
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "HS256", "key": "development_key_123456789_123456789"}'
-      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
     depends_on:
       - db
+  automigrate:
+    build:
+      context: ./hasura
+      dockerfile: automigrate.Dockerfile
+    environment:
+      HASURA_ENDPOINT: http://hasura:5000
+      HASURA_GRAPHQL_ENDPOINT: http://hasura:5000/v1/graphql
+      HASURA_GRAPHQL_ADMIN_SECRET: secret
+      AUTH_ENDPOINT: http://hbp:5001
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: "false"
+    volumes:
+      - ./hasura:/hasura
+    depends_on:
+      - hasura
   hbp:
     build:
       context: ./hbp

@@ -1,20 +1,22 @@
 const fetch = require("node-fetch");
 const { GraphQLClient } = require("graphql-request");
 
-const hasuraGraphqlEndpoint = process.env.HASURA_GRAPHQL_ENDPOINT;
-const hasuraAdminSecret = process.env.HASURA_GRAPHQL_ADMIN_SECRET;
-const authEndpoint = process.env.AUTH_ENDPOINT;
-
-if (!hasuraGraphqlEndpoint || !hasuraAdminSecret || !authEndpoint) {
-  throw new Error("Missing required env vars.");
+if (require.main === module) {
+  main().catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
 }
 
-main().catch(e => {
-  console.error(e);
-  process.exit(1);
-});
-
 async function main() {
+  const hasuraGraphqlEndpoint = process.env.HASURA_GRAPHQL_ENDPOINT;
+  const hasuraAdminSecret = process.env.HASURA_GRAPHQL_ADMIN_SECRET;
+  const authEndpoint = process.env.AUTH_ENDPOINT;
+
+  if (!hasuraGraphqlEndpoint || !hasuraAdminSecret || !authEndpoint) {
+    throw new Error("Missing required env vars.");
+  }
+
   const client = new GraphQLClient(hasuraGraphqlEndpoint, {
     headers: {
       "x-hasura-admin-secret": hasuraAdminSecret
@@ -48,3 +50,5 @@ async function main() {
     throw new Error("Failed to create test user!");
   }
 }
+
+module.exports.main = main;
