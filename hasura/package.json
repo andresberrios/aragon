@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "console": "hasura console",
-    "migrate": "hasura migrate apply"
+    "migrate": "hasura migrate apply",
+    "seed": "node -r dotenv/config seeds/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hasura-cli": "^1.1.0"
+    "dotenv": "^8.2.0",
+    "graphql-request": "^1.8.2",
+    "hasura-cli": "^1.1.0",
+    "node-fetch": "^2.6.0"
   }
 }
