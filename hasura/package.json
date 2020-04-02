@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "console": "hasura console",
-    "migrate": "hasura migrate apply"
+    "console": "HASURA_GRAPHQL_ENABLE_TELEMETRY=false hasura console",
+    "migrate": "HASURA_GRAPHQL_ENABLE_TELEMETRY=false hasura migrate apply",
+    "seed": "node -r dotenv/config seeds/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "graphql-request": "^1.8.2",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
     "hasura-cli": "^1.1.0"
   }
 }
