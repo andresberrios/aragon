@@ -10,6 +10,7 @@ import InvoicesForm from "../views/InvoicesForm.vue";
 import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
 import ContactForm from "../views/ContactForm.vue";
+import PaymentsForm from "../views/PaymentsForm.vue";
 
 Vue.use(VueRouter);
 
@@ -74,6 +75,12 @@ const routes: RouteConfig[] = [
     name: "contact.new",
     meta: { title: "New Contact" },
     component: ContactForm
+  },
+  {
+    path: "/payments/new",
+    name: "payments.new",
+    meta: { title: "New Payment" },
+    component: PaymentsForm
   }
 ];
 

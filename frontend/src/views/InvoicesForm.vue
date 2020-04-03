@@ -111,12 +111,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Invoice } from "../interfaces/invoices";
 import { datePickerLabels } from "../services/i18n";
-
-interface SelectOption {
-  value: string | null;
-  text: string;
-  disabled?: boolean;
-}
+import { SelectOption } from "../interfaces/common";
 
 @Component
 export default class InvoicesForm extends Vue {
