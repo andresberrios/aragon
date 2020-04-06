@@ -1,11 +1,11 @@
 <template>
   <b-container class="my-5">
-    <h1>Procedures</h1>
-    <b-button variant="success" :to="{ name: 'procedures.new' }"
-      >Create new</b-button
-    >
+    <h1>Contactos</h1>
+    <b-button variant="success" :to="{ name: 'contacts.new' }">
+      Crear nuevo
+    </b-button>
     <div class="mt-5">
-      <div v-if="$apollo.queries.procedures.loading">
+      <div v-if="$apollo.queries.contacts.loading">
         <b-spinner small />
         Loading...
       </div>
@@ -13,16 +13,12 @@
         {{ error.message }}
       </b-alert>
       <ul v-else class="list-unstyled">
-        <li
-          class="mt-4 d-flex"
-          v-for="procedure in procedures"
-          :key="procedure.id"
-        >
+        <li class="mt-4 d-flex" v-for="contact in contacts" :key="contact.id">
           <div class="pr-3">
             <b-button
               size="sm"
               variant="primary"
-              :to="{ name: 'procedures.edit', params: { id: procedure.id } }"
+              :to="{ name: 'contacts.edit', params: { id: contact.id } }"
             >
               <b-icon icon="pencil" />
             </b-button>
@@ -30,12 +26,11 @@
           <div class="flex-grow-1">
             <h2 class="h4">
               <router-link
-                :to="{ name: 'procedures.show', params: { id: procedure.id } }"
+                :to="{ name: 'contacts.show', params: { id: contact.id } }"
               >
-                {{ procedure.name }}
+                {{ contact.name }}
               </router-link>
             </h2>
-            <vue-simple-markdown :source="procedure.description" />
           </div>
         </li>
       </ul>
@@ -45,21 +40,21 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Procedure } from "../interfaces/procedure";
-import { GET_PROCEDURES } from "../queries/procedures";
+import { GET_CONTACTS } from "../queries/accounting";
+import { Contact } from "../interfaces/accounting";
 
 @Component({
   apollo: {
-    procedures: {
-      query: GET_PROCEDURES,
+    contacts: {
+      query: GET_CONTACTS,
       error(e) {
         this.error = e;
       }
     }
   }
 })
-export default class Procedures extends Vue {
-  procedures: Procedure[] = [];
+export default class Contacts extends Vue {
+  contacts: Contact[] = [];
   error: Error | null = null;
 }
 </script>

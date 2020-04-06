@@ -2,7 +2,7 @@
   <div>
     <b-container class="my-5">
       <h1>Contacto</h1>
-      <b-form class="mt-4">
+      <b-form class="mt-4" @submit.prevent="submit">
         <b-form-group label="Tipo">
           <b-button-group>
             <b-button
@@ -106,7 +106,6 @@
             ></b-form-input>
           </b-input-group>
         </b-form-group>
-        <!-- <h2 class="mt-4">Dirección</h2> -->
         <b-form-group label="Dirección">
           <b-input-group>
             <b-input-group-prepend is-text>
@@ -148,9 +147,35 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { datePickerLabels } from "../services/i18n";
 import { Contact } from "../interfaces/accounting";
+import {
+  GET_CONTACT,
+  GET_CONTACTS,
+  CREATE_CONTACT,
+  UPDATE_CONTACT
+} from "../queries/accounting";
 
-@Component
-export default class ContactForm extends Vue {
+@Component({
+  apollo: {
+    contact: {
+      query: GET_CONTACT,
+      variables() {
+        return { id: this.id };
+      },
+      skip() {
+        return !this.id;
+      },
+      error(e) {
+        this.error = e;
+      }
+    }
+  }
+})
+export default class EditContact extends Vue {
+  @Prop()
+  id?: string;
+
+  error: Error | null = null;
+
   contact: Contact = {
     isPerson: true,
     name: "",
@@ -168,7 +193,28 @@ export default class ContactForm extends Vue {
     }
   };
   datePickerLabels = datePickerLabels;
+
+  async submit() {
+    const isNew = !this.id;
+    await this.$apollo.mutate({
+      mutation: isNew ? CREATE_CONTACT : UPDATE_CONTACT,
+      variables: {
+        id: this.id,
+        values: { ...this.contact, id: undefined, __typename: undefined }
+      },
+      update: (store, { data: { operation } }) => {
+        const data = store.readQuery<{ contacts: Contact[] }>({
+          query: GET_CONTACTS
+        });
+        if (data) {
+          if (isNew) {
+            data.contacts.push(...operation.returning);
+          }
+          store.writeQuery({ query: GET_CONTACTS, data });
+        }
+      }
+    });
+    this.$router.push({ name: "contacts" });
+  }
 }
 </script>
-
-<style></style>

@@ -23,6 +23,7 @@ export interface Payment {
 }
 
 export interface Contact {
+  id?: string;
   isPerson: boolean;
   name: string;
   surname: string | null;

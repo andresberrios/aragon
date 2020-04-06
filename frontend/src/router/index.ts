@@ -9,7 +9,8 @@ import ShowProcedure from "../views/ShowProcedure.vue";
 import InvoicesForm from "../views/InvoicesForm.vue";
 import Auth from "../views/Auth.vue";
 import NotFound from "../views/NotFound.vue";
-import ContactForm from "../views/ContactForm.vue";
+import Contacts from "../views/Contacts.vue";
+import EditContact from "../views/EditContact.vue";
 import PaymentsForm from "../views/PaymentsForm.vue";
 
 Vue.use(VueRouter);
@@ -71,10 +72,23 @@ const routes: RouteConfig[] = [
     component: NotFound
   },
   {
-    path: "/contact/new",
-    name: "contact.new",
+    path: "/contacts",
+    name: "contacts",
+    meta: { title: "Contacts" },
+    component: Contacts
+  },
+  {
+    path: "/contacts/new",
+    name: "contacts.new",
     meta: { title: "New Contact" },
-    component: ContactForm
+    component: EditContact
+  },
+  {
+    path: "/contacts/:id/edit",
+    name: "contacts.edit",
+    meta: { title: "Edit Contact" },
+    component: EditContact,
+    props: true
   },
   {
     path: "/payments/new",
