@@ -1,0 +1,23 @@
+- args:
+    permission:
+      allow_upsert: true
+      check: {}
+      columns:
+      - address
+      - birthDate
+      - email
+      - idNum
+      - idType
+      - isPerson
+      - name
+      - phone
+      - surname
+      localPresets:
+      - key: ""
+        value: ""
+      set: {}
+    role: user
+    table:
+      name: contacts
+      schema: public
+  type: create_insert_permission

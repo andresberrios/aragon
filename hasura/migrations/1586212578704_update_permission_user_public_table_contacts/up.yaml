@@ -1,0 +1,22 @@
+- args:
+    permission:
+      allow_aggregations: false
+      columns:
+      - id
+      - isPerson
+      - name
+      - surname
+      - idType
+      - idNum
+      - birthDate
+      - phone
+      - email
+      - address
+      computed_fields: []
+      filter: {}
+      limit: null
+    role: user
+    table:
+      name: contacts
+      schema: public
+  type: create_select_permission
