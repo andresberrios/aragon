@@ -26,6 +26,13 @@
             required
           ></b-form-input>
         </b-form-group>
+        <b-form-group label="Apellidos" v-if="contact.isPerson">
+          <b-form-input
+            v-model="contact.surname"
+            placeholder="Ingrese el apellido del contacto"
+            required
+          ></b-form-input>
+        </b-form-group>
         <b-form-group label="Tipo de documento">
           <b-form-radio-group
             v-model="contact.idType"
@@ -35,10 +42,10 @@
             <b-form-radio v-if="contact.isPerson" value="passport">
               Pasaporte
             </b-form-radio>
-            <b-form-radio v-if="contact.isPerson" value="foreign-id">
+            <b-form-radio v-if="contact.isPerson" value="foreign_id">
               Tarjeta de identidad extranjera
             </b-form-radio>
-            <b-form-radio v-if="!contact.isPerson" value="foreign-company-num">
+            <b-form-radio v-if="!contact.isPerson" value="foreign_company_num">
               Número de empresa extranjera
             </b-form-radio>
           </b-form-radio-group>
@@ -50,10 +57,10 @@
             <span v-if="contact.idType === 'passport'">
               Número de pasaporte
             </span>
-            <span v-if="contact.idType === 'foreign-id'">
+            <span v-if="contact.idType === 'foreign_id'">
               Número de tarjeta de identidad extranjera
             </span>
-            <span v-if="contact.idType === 'foreign-company-num'">
+            <span v-if="contact.idType === 'foreign_company_num'">
               Número de empresa extranjera
             </span>
           </template>
@@ -64,9 +71,9 @@
           ></b-form-input>
         </b-form-group>
         <b-form-group label="Seleccione fecha de nacimiento">
-          <b-form-input type="date" />
+          <b-form-input type="date" v-model="contact.birthDate" />
           <!-- <b-form-datepicker
-            v-model="contact.dateOfBirth"
+            v-model="contact.birthDate"
             start-weekday="1"
             type="date"
             locale="es"
@@ -140,15 +147,17 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { datePickerLabels } from "../services/i18n";
+import { Contact } from "../interfaces/accounting";
 
 @Component
 export default class ContactForm extends Vue {
-  contact: any = {
+  contact: Contact = {
     isPerson: true,
     name: "",
-    idType: null,
+    surname: "",
+    idType: null as any,
     idNum: "",
-    dateOfBirth: "",
+    birthDate: "",
     phone: null as any,
     email: "",
     address: {
