@@ -74,8 +74,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Payment } from "../interfaces/payments";
-import { Invoice } from "../interfaces/invoices";
+import { Payment, Invoice } from "../interfaces/accounting";
 import { SelectOption } from "../interfaces/common";
 import { datePickerLabels } from "../services/i18n";
 

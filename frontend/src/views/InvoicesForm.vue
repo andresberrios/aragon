@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { Invoice } from "../interfaces/invoices";
+import { Invoice } from "../interfaces/accounting";
 import { datePickerLabels } from "../services/i18n";
 import { SelectOption } from "../interfaces/common";
 
