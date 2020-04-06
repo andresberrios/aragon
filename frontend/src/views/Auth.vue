@@ -1,15 +1,15 @@
 <template>
-  <div class="login-form d-flex justify-content-center align-items-center">
-    <b-card class="card-login">
+  <div class="auth-form d-flex justify-content-center align-items-center">
+    <b-card class="card-auth">
       <b-card-body class="text-center">
-        <h1>Login</h1>
-        <b-form @submit.prevent="submit">
+        <h1>Identificación</h1>
+        <b-form @submit.prevent="action === 'login' ? login() : signup()">
           <b-input-group class="mt-4">
             <b-input-group-prepend is-text>
               <b-icon icon="person"></b-icon>
             </b-input-group-prepend>
             <b-form-input
-              v-model="login.email"
+              v-model="email"
               type="email"
               size="lg"
               placeholder="Enter your email"
@@ -21,7 +21,7 @@
               <b-icon icon="lock"></b-icon>
             </b-input-group-prepend>
             <b-form-input
-              v-model="login.password"
+              v-model="password"
               type="password"
               size="lg"
               placeholder="Enter your password"
@@ -30,10 +30,19 @@
           </b-input-group>
           <b-button
             type="submit"
-            class="btn-lg btn-block my-3"
+            @click="action = 'login'"
+            class="btn-lg btn-block mt-3 mb-2"
             variant="primary"
           >
-            Login
+            Entrar
+          </b-button>
+          <b-button
+            type="submit"
+            @click="action = 'signup'"
+            class="btn-lg btn-block"
+            variant="outline-success"
+          >
+            Crear cuenta
           </b-button>
         </b-form>
       </b-card-body>
@@ -41,31 +50,35 @@
   </div>
 </template>
 
-<script>
-import { Vue, Component } from "vue-property-decorator";
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
 import auth from "../services/auth";
 
 @Component
-export default class Login extends Vue {
-  login = {
-    email: "",
-    password: ""
-  };
+export default class Auth extends Vue {
+  email = "";
+  password = "";
+  action = "login";
 
-  async submit() {
-    await auth.login(this.login.email, this.login.password);
+  async login() {
+    await auth.login(this.email, this.password);
     this.$router.push({ name: "home" });
+  }
+
+  async signup() {
+    await auth.register(this.email, this.email, this.password);
+    await this.login();
   }
 }
 </script>
 
 <style scoped>
-.login-form {
+.auth-form {
   height: 100vh;
   background-color: rgb(230, 230, 230);
 }
 
-.card.card-login {
+.card.card-auth {
   width: 28rem;
   border: none;
   box-shadow: 5px 5px 20px rgb(90, 89, 89);

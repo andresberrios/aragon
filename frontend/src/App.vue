@@ -16,8 +16,8 @@ import auth from "./services/auth";
 export default class App extends Vue {
   kickOut() {
     this.$apollo.getClient().clearStore();
-    if (this.$route.name !== "login") {
-      this.$router.replace({ name: "login" });
+    if (this.$route.name !== "auth") {
+      this.$router.replace({ name: "auth" });
     }
   }
 

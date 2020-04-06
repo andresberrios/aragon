@@ -7,7 +7,7 @@ import Procedures from "../views/Procedures.vue";
 import EditProcedure from "../views/EditProcedure.vue";
 import ShowProcedure from "../views/ShowProcedure.vue";
 import InvoicesForm from "../views/InvoicesForm.vue";
-import Login from "../views/Login.vue";
+import Auth from "../views/Auth.vue";
 import NotFound from "../views/NotFound.vue";
 import ContactForm from "../views/ContactForm.vue";
 import PaymentsForm from "../views/PaymentsForm.vue";
@@ -59,10 +59,10 @@ const routes: RouteConfig[] = [
     component: InvoicesForm
   },
   {
-    path: "/login",
-    name: "login",
-    meta: { title: "Login", hideNavBar: true },
-    component: Login
+    path: "/auth",
+    name: "auth",
+    meta: { title: "Authenticate", hideNavBar: true },
+    component: Auth
   },
   {
     path: "*",
@@ -92,9 +92,9 @@ const router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
   const isAuthenticated = await auth.isAuthenticated();
-  if (to.name !== "login" && !isAuthenticated) {
-    next({ name: "login" });
-  } else if (to.name === "login" && isAuthenticated) {
+  if (to.name !== "auth" && !isAuthenticated) {
+    next({ name: "auth" });
+  } else if (to.name === "auth" && isAuthenticated) {
     next({ name: "home" });
   } else {
     next();

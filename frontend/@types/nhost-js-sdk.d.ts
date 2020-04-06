@@ -3,7 +3,7 @@ declare class Auth {
     email: string,
     username: string,
     password: string,
-    register_data: any
+    register_data?: any
   ): Promise<boolean>;
   login(username: string, password: string): Promise<boolean>;
   signInAnonymously(): Promise<boolean>;
