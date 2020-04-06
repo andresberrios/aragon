@@ -6,13 +6,15 @@
   "scripts": {
     "console": "HASURA_GRAPHQL_ENABLE_TELEMETRY=false hasura console",
     "migrate": "HASURA_GRAPHQL_ENABLE_TELEMETRY=false hasura migrate apply",
-    "seed": "node -r dotenv/config seeds/index.js"
+    "seed": "node -r dotenv/config seeds/index.js",
+    "console:prod": "HASURA_GRAPHQL_ENABLE_TELEMETRY=false dotenv -e .env.prod.local hasura console"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "dotenv-cli": "^3.1.0",
     "graphql-request": "^1.8.2",
     "node-fetch": "^2.6.0"
   },

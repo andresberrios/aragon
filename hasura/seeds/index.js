@@ -9,12 +9,16 @@ if (require.main === module) {
 }
 
 async function main() {
-  const hasuraGraphqlEndpoint = process.env.HASURA_GRAPHQL_ENDPOINT;
+  let hasuraGraphqlEndpoint = process.env.HASURA_GRAPHQL_ENDPOINT;
   const hasuraAdminSecret = process.env.HASURA_GRAPHQL_ADMIN_SECRET;
   const authEndpoint = process.env.AUTH_ENDPOINT;
 
   if (!hasuraGraphqlEndpoint || !hasuraAdminSecret || !authEndpoint) {
     throw new Error("Missing required env vars.");
+  }
+
+  if (!hasuraGraphqlEndpoint.endsWith('/v1/graphql')) {
+    hasuraGraphqlEndpoint += "/v1/graphql"
   }
 
   const client = new GraphQLClient(hasuraGraphqlEndpoint, {
