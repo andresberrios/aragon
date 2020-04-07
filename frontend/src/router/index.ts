@@ -10,6 +10,7 @@ import InvoicesForm from "../views/InvoicesForm.vue";
 import Auth from "../views/Auth.vue";
 import NotFound from "../views/NotFound.vue";
 import Contacts from "../views/Contacts.vue";
+import ShowContact from "../views/ShowContact.vue";
 import EditContact from "../views/EditContact.vue";
 import PaymentsForm from "../views/PaymentsForm.vue";
 
@@ -34,17 +35,17 @@ const routes: RouteConfig[] = [
     component: Procedures
   },
   {
-    path: "/procedures/new",
-    name: "procedures.new",
-    meta: { title: "New Procedure" },
-    component: EditProcedure
-  },
-  {
     path: "/procedures/:id",
     name: "procedures.show",
     meta: { title: "Procedure" },
     component: ShowProcedure,
     props: true
+  },
+  {
+    path: "/procedures/new",
+    name: "procedures.new",
+    meta: { title: "New Procedure" },
+    component: EditProcedure
   },
   {
     path: "/procedures/:id/edit",
@@ -60,22 +61,17 @@ const routes: RouteConfig[] = [
     component: InvoicesForm
   },
   {
-    path: "/auth",
-    name: "auth",
-    meta: { title: "Authenticate", hideNavBar: true },
-    component: Auth
-  },
-  {
-    path: "*",
-    name: "notFound",
-    meta: { title: "Not Found", hideNavBar: true },
-    component: NotFound
-  },
-  {
     path: "/contacts",
     name: "contacts",
     meta: { title: "Contacts" },
     component: Contacts
+  },
+  {
+    path: "/contacts/:id",
+    name: "contacts.show",
+    meta: { title: "Contact" },
+    component: ShowContact,
+    props: true
   },
   {
     path: "/contacts/new",
@@ -95,6 +91,18 @@ const routes: RouteConfig[] = [
     name: "payments.new",
     meta: { title: "New Payment" },
     component: PaymentsForm
+  },
+  {
+    path: "/auth",
+    name: "auth",
+    meta: { title: "Authenticate", hideNavBar: true },
+    component: Auth
+  },
+  {
+    path: "*",
+    name: "notFound",
+    meta: { title: "Not Found", hideNavBar: true },
+    component: NotFound
   }
 ];
 
