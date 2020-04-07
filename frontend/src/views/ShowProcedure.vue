@@ -1,6 +1,14 @@
 <template>
   <b-container class="my-5">
     <span class="lead font-weight-bold">Procedimiento:</span>
+    <b-button
+      class="float-right"
+      variant="primary"
+      :to="{ name: 'procedures.edit', params: { id } }"
+    >
+      <b-icon icon="pencil" />
+      Editar
+    </b-button>
     <div v-if="$apollo.queries.procedure.loading">
       <b-spinner small /> Cargando...
     </div>
