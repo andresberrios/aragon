@@ -203,14 +203,14 @@ export default class EditContact extends Vue {
         values: { ...this.contact, id: undefined, __typename: undefined }
       },
       update: (store, { data: { operation } }) => {
-        const data = store.readQuery<{ contacts: Contact[] }>({
-          query: GET_CONTACTS
-        });
-        if (data) {
-          if (isNew) {
+        if (isNew) {
+          const data = store.readQuery<{ contacts: Contact[] }>({
+            query: GET_CONTACTS
+          });
+          if (data) {
             data.contacts.push(...operation.returning);
+            store.writeQuery({ query: GET_CONTACTS, data });
           }
-          store.writeQuery({ query: GET_CONTACTS, data });
         }
       }
     });
